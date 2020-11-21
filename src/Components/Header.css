@@ -1,0 +1,87 @@
+.header {
+    height: 150px;
+    background-color: rgb(239, 239, 239);
+}
+
+.back_btn {
+    height: 75px;
+    width: 75px;
+    border-style: none;
+}
+
+.menu_btn {
+    height: 75px;
+    width: 75px;
+    position: absolute;
+    right: 0px;
+    border-style: none;
+}
+
+
+
+.headerName {
+    font-size: 36px;
+    color: aliceblue;
+    /* position: absolute; */
+    margin: 0px 0px 0px 0px;
+    text-align: center;
+    line-height: 80px;
+}
+
+.searchbar {
+    height: 60px;
+    background-color: white;
+}
+
+.add {
+    -webkit-tap-highlight-color: transparent;
+    --blue: #007bff;
+    --indigo: #6610f2;
+    --purple: #6f42c1;
+    --pink: #e83e8c;
+    --red: #dc3545;
+    --orange: #fd7e14;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --teal: #20c997;
+    --cyan: #17a2b8;
+    --white: #ffffff;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+    --primary: #007bff;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    box-sizing: border-box;
+    display: inline-block;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1.5;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    border-radius: 3px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    font-size: 12px;
+    height: 60px;
+    margin: 0 0 10px 10px;
+    min-width: 80px;
+    padding: 15px 5px;
+    position: relative;
+    text-align: center;
+    color: inherit;
+    text-decoration: none;
+}
