@@ -52,6 +52,8 @@ class EditType extends Component {
         this.reload = this.reload.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.GetFoodTypeName = this.GetFoodTypeName.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.GetFoodTypeName_Edit = this.GetFoodTypeName_Edit.bind(this)
     }
     backgo() {
         // <Link to="/" />
@@ -65,30 +67,29 @@ class EditType extends Component {
         this.type = "checkbox"
         var MenuInfo = sessionStorage.getItem('MenuInfo');
         this.state.MenuInfo = JSON.parse(MenuInfo);
+        // MenuInfo = JSON.parse(MenuInfo)
          // 取得FoodTypeName_List 更新按鈕資訊
-         var FoodTypeName_List = sessionStorage.getItem('FoodTypeName_List');
-         if (FoodTypeName_List == null){
-             FoodTypeName_List = []
-         }else{
-             FoodTypeName_List = FoodTypeName_List.split(',')
-         }
-         console.log("FoodTypeName_List", FoodTypeName_List)
-        //  this.setState({FoodTypeName_List:FoodTypeName_List})
+        var FoodType = this.state.MenuInfo["FoodType"]
+        if (FoodEdit == null){
+            var FoodTypeName_List = []
+            // var FoodTypeName_List = sessionStorage.getItem('FoodTypeName_List');
+            for (var FoodType_key in FoodType){
+                console.log("aaaa:", FoodType_key)
+                FoodTypeName_List.push(FoodType[FoodType_key]["FoodTypeID"])
+                this.setState({ FoodTypeName_List: FoodTypeName_List })
+            }
+        }else if (FoodEdit == 'true') {
+            var FoodTypeName_List = sessionStorage.getItem('FoodTypeName_List');
+            FoodTypeName_List = FoodTypeName_List.split(',')
+        }
+        console.log("FoodTypeName_List", FoodTypeName_List)
+        // this.state.FoodTypeName_List = FoodTypeName_List
+        // this.setState({FoodTypeName_List:FoodTypeName_List},function(){
         if (FoodEdit == null) {
-            this.GetFoodTypeName()
+                this.GetFoodTypeName()
         } else if (FoodEdit == "true") {
-            this.GetFoodTypeName()
-        }      
-        //  if (FoodTypeName_List == null) {
-        //      FoodTypeName_List = []
-        //  } else {
-        //      FoodTypeName_List = FoodTypeName_List.split(',')
-        //  }
-        //  this.setState({
-        //      FoodTypeName_List: FoodTypeName_List
-        //  }, function () {
-        //      this.GetFoodTypeName()
-        //  })
+                this.GetFoodTypeName_Edit()
+            }  
     }
     GetFoodTypeName() {
         var CardsList = [];
@@ -96,12 +97,6 @@ class EditType extends Component {
         for (var FoodType_key in FoodType) {
             console.log(FoodType[FoodType_key]["FoodTypeName"])
             CardsList.push(<Accordion>
-                {/* <AccordionSummary
-                    // expandIcon={<ExpandMoreIcon />}
-                    // aria-label="Expand"
-                    // aria-controls="additional-actions1-content"
-                    id="additional-actions1-header"
-                > */}
                     <FormControlLabel
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
@@ -121,9 +116,54 @@ class EditType extends Component {
         }
         this.setState({ CardsList: CardsList })
     }
+    GetFoodTypeName_Edit() {
+        var CardsList = [];
+        var FoodType = this.state.MenuInfo["FoodType"]
+        var FoodTypeName_List = sessionStorage.getItem('FoodTypeName_List')
+        console.log("判斷：", FoodTypeName_List)
+        FoodTypeName_List = FoodTypeName_List.split(',')
+        for (var FoodType_key in FoodType) {
+            console.log(FoodType[FoodType_key])
+            if (FoodTypeName_List.includes(FoodType[FoodType_key]["FoodTypeID"])){
+            CardsList.push(<Accordion>
+                <FormControlLabel
+                    aria-label="Acknowledge"
+                    onClick={(event) => event.stopPropagation()}
+                    onFocus={(event) => event.stopPropagation()}
+                    control={
+                        <Checkbox
+                            id={FoodType_key}
+                            defaultChecked  //預設被選
+                            onChange={this.handleChange}
+                            indeterminate
+                        />}
+                    label={FoodType[FoodType_key]["FoodTypeName"]}
+                />
+            </Accordion>)}
+            else{
+                CardsList.push(<Accordion>
+                    <FormControlLabel
+                        aria-label="Acknowledge"
+                        onClick={(event) => event.stopPropagation()}
+                        onFocus={(event) => event.stopPropagation()}
+                        control={
+                            <Checkbox
+                                id={FoodType_key}
+                                onChange={this.handleChange}
+                                // color="primary"
+                                indeterminate
+                            />}
+                        label={FoodType[FoodType_key]["FoodTypeName"]}
+                    />
+                </Accordion>)
+            }
+        }
+        this.setState({ CardsList: CardsList })
+    }
     handleChange(event) {
         var FoodEdit = sessionStorage.getItem('FoodEdit')
         console.log("FoodEdit", FoodEdit)
+        console.log("this.state.FoodTypeName_List:", this.state.FoodTypeName_List)
         if (FoodEdit == null) {
             var FoodTypeName_List = eval(this.state.FoodTypeName_List)
         } else if (FoodEdit == "true") {
@@ -138,7 +178,7 @@ class EditType extends Component {
         // console.log(event.target.checked)
         //如果方塊被選擇
         if (event.target.checked == true & FoodEdit == null) {
-            eval(FoodTypeName_List).push(event.target.id)
+            FoodTypeName_List.push(event.target.id)
             console.log("安安")
             // this.state.ChoiceTypeList.concat(event.target.id)
         } else if (event.target.checked == true & FoodEdit == "true") {
@@ -150,20 +190,24 @@ class EditType extends Component {
         if (event.target.checked == false & FoodEdit == null) //如果方塊被取消掉
         {
             // 把被取消的元素從陣列移除
-            FoodTypeName_List = eval(FoodTypeName_List).filter(function (item) {
-                return item != event.target.id
-            })
-        } else if (event.target.checked == false & Edit == "true") //如果方塊被取消掉
+            console.log("157:", FoodTypeName_List)
+            console.log("158:", event.target.id)
+            FoodTypeName_List.forEach(function (item, index, arr) {
+                if (item === event.target.id) {
+                    arr.splice(index, 1);
+                }
+            });
+            // this.setState({FoodTypeName_List, FoodTypeName_List})
+        } else if (event.target.checked == false & FoodEdit == "true") //如果方塊被取消掉
         {
             // 把被取消的元素從陣列移除
             FoodTypeName_List = FoodTypeName_List.split(',')
-            // ChoiceTypeList = JSON.parse(ChoiceTypeList)
             FoodTypeName_List = FoodTypeName_List.filter(function (item) {
                 return item != event.target.id
             })
         }
         console.log("第一個：", FoodTypeName_List)
-        sessionStorage.setItem('ChoiceTypeList', FoodTypeName_List)
+        sessionStorage.setItem('FoodTypeName_List', FoodTypeName_List)
         // sessionStorage.setItem('Edit', true)
         // this.setState({ ChoiceTypeList: ChoiceTypeList }, function () {
         //     console.log("ChoiceTypeList:", this.state.ChoiceTypeList)
@@ -175,13 +219,27 @@ class EditType extends Component {
         var FoodTypeName_List = sessionStorage.getItem('FoodTypeName_List');
         //更新FoodEdit狀態
         sessionStorage.setItem("FoodEdit", true)
-        // 如果方塊被選擇
-        this.setState({
-            FoodTypeName_List: FoodTypeName_List
-        }, function () {
-            console.log("FoodTypeName_List:", this.state.FoodTypeName_List)
-            sessionStorage.setItem('FoodTypeName_List', FoodTypeName_List);
-        })
+        //如果方塊被選擇
+        // if (event.target.checked == true) {
+        //     FoodTypeName_List.push(event.target.id)
+        // } 
+        // else if (event.target.checked == false) //如果方塊被取消掉
+        // {
+        //     // 把被取消的元素從陣列移除
+        //     FoodTypeName_List.forEach(function (item, index, arr) {
+        //         if (item === event.target.id) {
+        //             arr.splice(index, 1);
+        //         }
+        //     });
+        // }
+        console.log("Submit:", FoodTypeName_List)
+        sessionStorage.setItem('FoodTypeName_List', FoodTypeName_List);
+        // this.setState({
+        //     FoodTypeName_List: FoodTypeName_List
+        // }, function () {
+        //     console.log("FoodTypeName_List:", this.state.FoodTypeName_List)
+        //     sessionStorage.setItem('FoodTypeName_List', FoodTypeName_List);
+        // })
     }
     //取消
     reload(event) {

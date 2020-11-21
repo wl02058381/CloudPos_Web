@@ -244,6 +244,7 @@ class EditChoice extends Component {
             this.setState({ ChoiceTypeList: ChoiceTypeList });
         })
         // event.preventDefault();
+        sessionStorage.setItem("ChoiceTypeListPost", this.state.ChoiceTypeList)
     }
     GetChoiceTypeName_Edit() {
         var CardsList = [];

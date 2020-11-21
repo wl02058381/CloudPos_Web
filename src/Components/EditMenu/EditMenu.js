@@ -61,10 +61,10 @@ class EditMenu extends Component {
             console.log("FoodType_key", FoodType_key)
             FoodTypeName_List.push(FoodType_key)
         }
-        sessionStorage.setItem('FoodTypeName_List', FoodTypeName_List)
+        // sessionStorage.setItem('FoodTypeName_List', FoodTypeName_List)
 
         if (this.state.FoodName != undefined) {
-            console.log(FoodTypeName_List)
+            // console.log(FoodTypeName_List)
             sessionStorage.setItem('FoodName', this.state.FoodName);
             sessionStorage.setItem('Price', this.state.Price);
             sessionStorage.setItem('FoodID',this.state.FoodID)
@@ -139,9 +139,13 @@ class EditMenu extends Component {
         var Price = this.state.Price
         var ChoiceTypeList = sessionStorage.getItem('ChoiceTypeList');
         FoodTypeID = FoodTypeID.split(',')
-        // ChoiceTypeList = ChoiceTypeList.split(',')
-        ChoiceTypeList = eval(ChoiceTypeList)
+        ChoiceTypeList = ChoiceTypeList.split(',')
         console.log("ChoiceTypeList:", ChoiceTypeList)
+        // FoodTypeID.forEach(item => {
+        //     if (item) {
+        //         FoodTypeID.push(item)
+        //     }
+        // })
         this.UpdateFood(FoodID,FoodTypeID, FoodName, Price, ChoiceTypeList);
         event.preventDefault();
     }
