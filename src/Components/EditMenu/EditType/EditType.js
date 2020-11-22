@@ -1,6 +1,6 @@
 //菜單更新
 import React, { Component } from 'react';
-import { Button, Container, Row, Col, Form,  Card, FormControl } from 'react-bootstrap';
+import { Button, Container, Row, Col, Form, Card, FormControl } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import back from '../../../images/back.svg';
@@ -14,6 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import '../../Content.css'
 class EditType extends Component {
     constructor(props) {
@@ -56,10 +57,8 @@ class EditType extends Component {
         this.GetFoodTypeName_Edit = this.GetFoodTypeName_Edit.bind(this)
     }
     backgo() {
-        // <Link to="/" />
         const history = creatHistory();
         history.goBack();
-        // history.go(-1)
     }
     componentDidMount() {
         document.title = '分類項目';
@@ -68,35 +67,32 @@ class EditType extends Component {
         var MenuInfo = sessionStorage.getItem('MenuInfo');
         this.state.MenuInfo = JSON.parse(MenuInfo);
         // MenuInfo = JSON.parse(MenuInfo)
-         // 取得FoodTypeName_List 更新按鈕資訊
-        var FoodType = this.state.MenuInfo["FoodType"]
-        if (FoodEdit == null){
+        // 取得FoodTypeName_List 更新按鈕資訊
+        var Food = this.state.MenuInfo["Food"]
+        if (FoodEdit == null) {
             var FoodTypeName_List = []
             // var FoodTypeName_List = sessionStorage.getItem('FoodTypeName_List');
-            for (var FoodType_key in FoodType){
-                console.log("aaaa:", FoodType_key)
-                FoodTypeName_List.push(FoodType[FoodType_key]["FoodTypeID"])
-                this.setState({ FoodTypeName_List: FoodTypeName_List })
-            }
-        }else if (FoodEdit == 'true') {
+            for (var Food_key in Food) {
+                // console.log("aaaa:", FoodType_key)
+                FoodTypeName_List = Food[Food_key]["FoodTypeID"]
+            } this.setState({ FoodTypeName_List: FoodTypeName_List }, function () {
+                this.GetFoodTypeName()
+            })
+        } else if (FoodEdit == 'true') {
             var FoodTypeName_List = sessionStorage.getItem('FoodTypeName_List');
             FoodTypeName_List = FoodTypeName_List.split(',')
+            this.GetFoodTypeName_Edit()
         }
-        console.log("FoodTypeName_List", FoodTypeName_List)
-        // this.state.FoodTypeName_List = FoodTypeName_List
-        // this.setState({FoodTypeName_List:FoodTypeName_List},function(){
-        if (FoodEdit == null) {
-                this.GetFoodTypeName()
-        } else if (FoodEdit == "true") {
-                this.GetFoodTypeName_Edit()
-            }  
     }
     GetFoodTypeName() {
         var CardsList = [];
         var FoodType = this.state.MenuInfo["FoodType"]
+        var FoodTypeName_List = this.state.FoodTypeName_List
+        console.log(FoodTypeName_List)
         for (var FoodType_key in FoodType) {
             console.log(FoodType[FoodType_key]["FoodTypeName"])
-            CardsList.push(<Accordion>
+            if (FoodTypeName_List.includes(FoodType_key)) {
+                CardsList.push(<Accordion>
                     <FormControlLabel
                         aria-label="Acknowledge"
                         onClick={(event) => event.stopPropagation()}
@@ -111,8 +107,27 @@ class EditType extends Component {
                             />}
                         label={FoodType[FoodType_key]["FoodTypeName"]}
                     />
-                {/* </AccordionSummary> */}
+                    {/* </AccordionSummary> */}
                 </Accordion>)
+            }
+            else {
+                CardsList.push(<Accordion>
+                    <FormControlLabel
+                        aria-label="Acknowledge"
+                        onClick={(event) => event.stopPropagation()}
+                        onFocus={(event) => event.stopPropagation()}
+                        control={
+                            <Checkbox
+                                id={FoodType_key}
+                                onChange={this.handleChange}
+                                // color="primary"
+                                indeterminate
+                            />}
+                        label={FoodType[FoodType_key]["FoodTypeName"]}
+                    />
+                    {/* </AccordionSummary> */}
+                </Accordion>)
+            }
         }
         this.setState({ CardsList: CardsList })
     }
@@ -124,23 +139,24 @@ class EditType extends Component {
         FoodTypeName_List = FoodTypeName_List.split(',')
         for (var FoodType_key in FoodType) {
             console.log(FoodType[FoodType_key])
-            if (FoodTypeName_List.includes(FoodType[FoodType_key]["FoodTypeID"])){
-            CardsList.push(<Accordion>
-                <FormControlLabel
-                    aria-label="Acknowledge"
-                    onClick={(event) => event.stopPropagation()}
-                    onFocus={(event) => event.stopPropagation()}
-                    control={
-                        <Checkbox
-                            id={FoodType_key}
-                            defaultChecked  //預設被選
-                            onChange={this.handleChange}
-                            indeterminate
-                        />}
-                    label={FoodType[FoodType_key]["FoodTypeName"]}
-                />
-            </Accordion>)}
-            else{
+            if (FoodTypeName_List.includes(FoodType[FoodType_key]["FoodTypeID"])) {
+                CardsList.push(<Accordion>
+                    <FormControlLabel
+                        aria-label="Acknowledge"
+                        onClick={(event) => event.stopPropagation()}
+                        onFocus={(event) => event.stopPropagation()}
+                        control={
+                            <Checkbox
+                                id={FoodType_key}
+                                defaultChecked  //預設被選
+                                onChange={this.handleChange}
+                                indeterminate
+                            />}
+                        label={FoodType[FoodType_key]["FoodTypeName"]}
+                    />
+                </Accordion>)
+            }
+            else {
                 CardsList.push(<Accordion>
                     <FormControlLabel
                         aria-label="Acknowledge"
@@ -190,14 +206,15 @@ class EditType extends Component {
         if (event.target.checked == false & FoodEdit == null) //如果方塊被取消掉
         {
             // 把被取消的元素從陣列移除
-            console.log("157:", FoodTypeName_List)
+            console.log("刪除前:", FoodTypeName_List)
             console.log("158:", event.target.id)
             FoodTypeName_List.forEach(function (item, index, arr) {
                 if (item === event.target.id) {
                     arr.splice(index, 1);
                 }
             });
-            // this.setState({FoodTypeName_List, FoodTypeName_List})
+            console.log("刪除後:", FoodTypeName_List)
+            this.setState({FoodTypeName_List, FoodTypeName_List})
         } else if (event.target.checked == false & FoodEdit == "true") //如果方塊被取消掉
         {
             // 把被取消的元素從陣列移除
@@ -298,9 +315,9 @@ class EditType extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                        {this.state.CardsList}
+                                    {this.state.CardsList}
                                 </div>
-                                < button onClick={this.reload}className="btn btn-block btn-secondary btn-lg">取消</button>
+                                < button onClick={this.reload} className="btn btn-block btn-secondary btn-lg">取消</button>
                                 < input type="submit" className="btn btn-block btn-success btn-lg" value="確認" ></input>
                             </form>
                         </div>

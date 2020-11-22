@@ -394,11 +394,11 @@ class EditRadio extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
+                                    <div style={{ marginTop: '16px' }}></div>
                                     {this.state.CardsList}
-
                                 </div>
-                                < input type="submit" className="btn btn-block btn-success btn-lg" value="確認" ></input>
                                 < button onClick={this.reload} className="btn btn-block btn-secondary btn-lg">取消</button>
+                                < input type="submit" className="btn btn-block btn-success btn-lg" value="確認" ></input>
                             </form>
                         </div>
 

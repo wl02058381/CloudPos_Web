@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import back from '../../images/back.svg';
 import menu from '../../images/menu.jpg';
+import creatHistory from 'history/createHashHistory';
 const config = require('../../config');
 class StoreInfo extends Component {
     backgo() {
-        // <Link to="/" />
-        history.go(-1)
+        const history = creatHistory();
+        history.goBack();
     }
     componentDidMount() {
         document.title = '店家資訊';

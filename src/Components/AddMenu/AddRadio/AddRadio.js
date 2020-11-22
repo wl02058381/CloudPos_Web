@@ -240,6 +240,7 @@ class AddRadio extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
+                                    <div style={{ marginTop: '16px' }}></div>
                                     {this.state.CardsList}
                                 </div>
                                 {/* <Link to="/AddMenu">< input type="submit" className="btn btn-block btn-success btn-lg" value="確認上傳" ></input></Link> */}

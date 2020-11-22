@@ -17,8 +17,6 @@
     border-style: none;
 }
 
-
-
 .headerName {
     font-size: 36px;
     color: aliceblue;
@@ -84,4 +82,14 @@
     text-align: center;
     color: inherit;
     text-decoration: none;
+}
+
+.fab {
+    position: fixed !important;
+    width: 56px;
+    left: 25px;
+    bottom: 50px;
+    /* right: 50px; */
+    z-index: 999;
+    /* margin-left: -28px; */
 }

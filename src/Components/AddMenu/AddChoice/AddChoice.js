@@ -112,6 +112,7 @@ class AddChoice extends Component {
         // ChoiceTypeName_List = []
         // ChoiceTypeID_List = []
         for (var ChoiceType_key in ChoiceType) {
+            if (ChoiceType[ChoiceType_key]["Check"] == "0") {
             // ChoiceTypeName_List.push(ChoiceType[key]["ChoiceTypeName"])
             console.log(ChoiceType[ChoiceType_key]["ChoiceTypeName"])
             var ChoiceList = eval(ChoiceType[ChoiceType_key]["ChoiceList"])
@@ -174,7 +175,7 @@ class AddChoice extends Component {
                     </Typography>
                 </AccordionDetails>
             </Accordion>)
-            }
+            }}
             
         }
         this.setState({ CardsList: CardsList })
@@ -231,6 +232,7 @@ class AddChoice extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
+                                    <div style={{ marginTop: '16px' }}></div>
                                     {this.state.CardsList}
                                 </div>
                                 {/* < input type="submit" className="btn btn-block btn-success btn-lg" value="確認上傳" ></input> */}

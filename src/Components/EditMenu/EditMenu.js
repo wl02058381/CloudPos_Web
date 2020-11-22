@@ -6,12 +6,14 @@ import back from '../../images/back.svg';
 import menu from '../../images/menu.jpg';
 import ad from '../../images/remove-ads.png';
 import '../Content.css'
+import {
+    toast
+} from 'react-toastify'
 import creatHistory from 'history/createHashHistory'
 const Config = require("../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
 class EditMenu extends Component {
-
     constructor(props) {
         super(props);
         var data = this.props.location.state;
@@ -47,8 +49,10 @@ class EditMenu extends Component {
         this.handleChange_Price = this.handleChange_Price.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.UpdateFood = this.UpdateFood.bind(this);
+        this.clearString = this.clearString.bind(this);
     }
     componentDidMount() {
+        toast.configure()
         document.title = '餐點設定';
         var MenuInfo = sessionStorage.getItem('MenuInfo');
         var FoodTypeName_List = []
@@ -67,7 +71,7 @@ class EditMenu extends Component {
             // console.log(FoodTypeName_List)
             sessionStorage.setItem('FoodName', this.state.FoodName);
             sessionStorage.setItem('Price', this.state.Price);
-            sessionStorage.setItem('FoodID',this.state.FoodID)
+            sessionStorage.setItem('FoodID', this.state.FoodID)
             sessionStorage.setItem('ChoiceTypeList', this.state.ChoiceTypeList)
         }
         var FoodName = sessionStorage.getItem('FoodName');
@@ -93,7 +97,7 @@ class EditMenu extends Component {
     handleChange_Price(event) {
         this.setState({ Price: event.target.value });
     }
-    
+
     handleImageChange(e) {
         e.preventDefault();
         let reader = new FileReader();
@@ -130,6 +134,14 @@ class EditMenu extends Component {
         }.bind(this))
         event.preventDefault();
     }
+    clearString(s) {
+        var pattern = new RegExp("[`~!@#$^&*()=|{}':;'\\[\\].<>/?~！@#￥……&*（）&;|{}【】‘；：”“'。，、？]")
+        var rs = "";
+        for (var i = 0; i < s.length; i++) {
+            rs = rs + s.substr(i, 1).replace(pattern, '');
+        }
+        return rs;
+    }
     // Submit會執行
     handleSubmit(event) {
         event.preventDefault();
@@ -138,19 +150,21 @@ class EditMenu extends Component {
         var FoodName = this.state.FoodName
         var Price = this.state.Price
         var ChoiceTypeList = sessionStorage.getItem('ChoiceTypeList');
+        ChoiceTypeList = this.clearString(ChoiceTypeList)
+        console.log("ChoiceTypeList:", ChoiceTypeList)
         FoodTypeID = FoodTypeID.split(',')
         ChoiceTypeList = ChoiceTypeList.split(',')
-        console.log("ChoiceTypeList:", ChoiceTypeList)
+
         // FoodTypeID.forEach(item => {
         //     if (item) {
         //         FoodTypeID.push(item)
         //     }
         // })
-        this.UpdateFood(FoodID,FoodTypeID, FoodName, Price, ChoiceTypeList);
-        event.preventDefault();
+        this.UpdateFood(FoodID, FoodTypeID, FoodName, Price, ChoiceTypeList);
+
     }
     // 更新餐點
-    UpdateFood(FoodID,FoodTypeID, FoodName, Price, ChoiceTypeList) {
+    UpdateFood(FoodID, FoodTypeID, FoodName, Price, ChoiceTypeList) {
         // let StoteID = this.props.match.params.StoteID;
         let StoreID = this.state.StoreID
         let ImgSrc = "jpg"
@@ -165,19 +179,21 @@ class EditMenu extends Component {
             },
             "data": JSON.stringify({
                 "StoreID": StoreID,
-                "FoodID":FoodID,
-                "FoodTypeID": JSON.stringify(FoodTypeID),
+                "FoodID": FoodID,
+                "FoodTypeID": FoodTypeID,
                 "FoodName": FoodName,
                 "ImgSrc": ImgSrc,
                 "Price": Price,
-                "ChoiceTypeList": ChoiceTypeList,
+                "ChoiceTypeList": JSON.stringify(ChoiceTypeList),
                 "SoldOut": SoldOut,
                 "OffShelf": OffShelf
             }),
-            
+
         };
         $.ajax(settings).done(function (response) {
-            alert("編輯成功")
+            toast.success('編輯成功', {
+                position: toast.POSITION.TOP_CENTER
+            })
             console.log(response);
             // sessionStorage.clear()
         }.bind(this))

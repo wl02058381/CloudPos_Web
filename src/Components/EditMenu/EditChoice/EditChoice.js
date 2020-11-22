@@ -394,6 +394,7 @@ class EditChoice extends Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
+                                    <div style={{ marginTop: '16px' }}></div>
                                     {this.state.CardsList}
                                 </div>
                                 < button onClick={this.reload} className="btn btn-block btn-secondary btn-lg">取消</button>

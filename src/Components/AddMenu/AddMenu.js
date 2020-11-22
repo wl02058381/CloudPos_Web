@@ -6,6 +6,9 @@ import back from '../../images/back.svg';
 import menu from '../../images/menu.jpg';
 import ad from '../../images/remove-ads.png';
 import '../Content.css'
+import { toast } from 'react-toastify'
+import creatHistory from 'history/createHashHistory';
+import style from 'react-toastify/dist/ReactToastify.css'
 const Config = require("../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
@@ -17,8 +20,8 @@ class AddMenu extends Component {
             imagePreviewUrl: '',
             value: '',
             StoreID: "S_725d0fd9-4875-4762-8bc8-43404d2d5775",
-            FoodName : '',
-            Price : ''
+            FoodName: '',
+            Price: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange_Name = this.handleChange_Name.bind(this);
@@ -26,10 +29,11 @@ class AddMenu extends Component {
         this.AddFood = this.AddFood.bind(this);
     }
     backgo() {
-        // <Link to="/" />
-        history.go(-1)
+        const history = creatHistory();
+        history.goBack();
     }
     componentDidMount() {
+        toast.configure()
         document.title = '菜單新增';
         var FoodName = sessionStorage.getItem('FoodName');
         var Price = sessionStorage.getItem('Price');
@@ -48,14 +52,15 @@ class AddMenu extends Component {
         var FoodTypeID = sessionStorage.getItem('FoodTypeName_List');
         var FoodName = sessionStorage.getItem('FoodName');
         var Price = sessionStorage.getItem('Price');
-        alert('A name was submitted: ' + FoodName + "     Price:" + Price);
+        // alert('A name was submitted: ' + FoodName + "     Price:" + Price);
         var ChoiceTypeList = sessionStorage.getItem('ChoiceTypeList');
         FoodTypeID = FoodTypeID.split(',')
         ChoiceTypeList = ChoiceTypeList.split(',')
         // ChoiceTypeList = ChoiceTypeList.replace(/\\/,'')
         console.log("ChoiceTypeList:", ChoiceTypeList)
         event.preventDefault();
-        this.AddFood(FoodTypeID, FoodName, Price,ChoiceTypeList);
+        this.AddFood(FoodTypeID, FoodName, Price, ChoiceTypeList);
+        
     }
     handleImageChange(e) {
         e.preventDefault();
@@ -70,7 +75,7 @@ class AddMenu extends Component {
         reader.readAsDataURL(file)
     }
     // 新增餐點
-    AddFood(FoodTypeID, FoodName, Price, ChoiceTypeList){
+    AddFood(FoodTypeID, FoodName, Price, ChoiceTypeList) {
         // let StoteID = this.props.match.params.StoteID;
         let StoreID = this.state.StoreID
         // let FoodTypeID = FoodTypeID
@@ -94,15 +99,18 @@ class AddMenu extends Component {
                 "FoodTypeID": FoodTypeID,
                 "FoodName": FoodName,
                 "ImgExtension": ImgExtension,
-                "Price":Price,
+                "Price": Price,
                 "ChoiceTypeList": ChoiceTypeList,
                 "SoldOut": SoldOut,
                 "OffShelf": OffShelf
             }),
         };
         $.ajax(settings).done(function (response) {
-            alert("新增成功")
+            // alert("新增成功")
+            toast.success('新增成功',{position:toast.POSITION.TOP_CENTER})
             console.log(response);
+            const history = creatHistory();
+            history.goBack();
             // sessionStorage.clear()
         }.bind(this))
     }
