@@ -1,6 +1,10 @@
 //菜單更新
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import REButton from 'react-bootstrap/Button';
+import {
+    Modal
+} from 'react-bootstrap';
 import $ from 'jquery';
 import back from '../../images/back.svg';
 import menu from '../../images/menu.jpg';
@@ -50,6 +54,8 @@ class EditMenu extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.UpdateFood = this.UpdateFood.bind(this);
         this.clearString = this.clearString.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleShow = this.handleShow.bind(this);
     }
     componentDidMount() {
         toast.configure()
@@ -82,7 +88,16 @@ class EditMenu extends Component {
         this.state.FoodName = FoodName
         this.state.Price = Price
     }
-    //設定送出
+    handleClose() {
+        this.setState({
+            show: false
+        })
+    }
+    handleShow() {
+        this.setState({
+            show: true
+        })
+    }
     //上一頁
     backgo() {
         // <Link to="/" />
@@ -296,6 +311,20 @@ class EditMenu extends Component {
 
                     </div>
                 </div>
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>通知</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body >你確定要刪除類別嗎？</Modal.Body>
+                    <Modal.Footer>
+                        <REButton variant="secondary" onClick={this.handleClose}>
+                            Close
+                        </REButton>
+                        <REButton variant="danger" onClick={this.DeleteFood}>
+                            Delete
+                        </REButton>
+                    </Modal.Footer>
+                </Modal>
             </div>
 
         );

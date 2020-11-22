@@ -1,6 +1,7 @@
 //菜單更新
-import React, { Component } from 'react';
-import { Container, Row, Col, Form, Card, FormControl } from 'react-bootstrap';
+import React, { Component, useEffect, useState } from 'react';
+import { Card, Modal } from 'react-bootstrap';
+import REButton from 'react-bootstrap/Button';
 import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import back from '../../../images/back.svg';
@@ -24,13 +25,15 @@ import { toast } from 'react-toastify'
 import style from 'react-toastify/dist/ReactToastify.css'
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-
-import { positions } from '@material-ui/system';
-
+import style2 from 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Content.css'
+import { Input } from '@material-ui/core';
 const Config = require("../../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
+// function Example() {
+//     const [show, setShow] = useState(false);
+// }
 class AddType extends Component {
     constructor(props) {
         super(props);
@@ -64,7 +67,13 @@ class AddType extends Component {
             AddCard: null,
             check: [],
             FoodTypeName_List: [],
-            FoodTypeName: ''
+            FoodTypeName: '',
+            show: false,
+            show_Edit: false,
+            FoodTypeID: '',
+            DelFoodTypeName: '',
+            EditFoodTypeName:'',
+            NewFoodTypeName:''
         };
         this.handleChange = this.handleChange.bind(this);
         this.AddTypeBTN = this.AddTypeBTN.bind(this);
@@ -72,6 +81,28 @@ class AddType extends Component {
         this.handleTextChange = this.handleTextChange.bind(this);
         this.ShowSetMenu = this.ShowSetMenu.bind(this);
         this.DeleteType = this.DeleteType.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleShow_Edit = this.handleShow_Edit.bind(this);
+        this.handleClose_Edit = this.handleClose_Edit.bind(this);
+        this.EditType = this.EditType.bind(this);
+        this.handleEditChange = this.handleEditChange.bind(this);
+    }
+    handleClose() { this.setState({ show: false }) }
+    handleClose_Edit() { this.setState({ show_Edit: false }) }
+    handleShow(event) {
+        console.log(event.currentTarget.value)
+        var FoodTypeID = event.currentTarget.value;
+        var DelFoodTypeName = event.currentTarget.id;
+        // this.setState({ })
+        this.setState({ show: true, FoodTypeID: FoodTypeID, DelFoodTypeName: DelFoodTypeName })
+    }
+    handleShow_Edit(event) {
+        console.log(event.currentTarget.value)
+        var FoodTypeID = event.currentTarget.value;
+        var EditFoodTypeName = event.currentTarget.id;
+        // this.setState({ })
+        this.setState({ show_Edit: true, FoodTypeID: FoodTypeID, EditFoodTypeName: EditFoodTypeName })
     }
     backgo() {
         // <Link to="/" />
@@ -147,26 +178,26 @@ class AddType extends Component {
                                 />}
                             label={FoodType[FoodType_key]["FoodTypeName"]}
                         />
-                        <IconButton aria-label="Edit">
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                startIcon={<EditIcon />}
-                            >
-                                Edit
+                        <Button
+                            onClick={this.handleShow_Edit}
+                            id={FoodType[FoodType_key]["FoodTypeName"]}
+                            value={FoodType_key}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<EditIcon />}
+                        >
+                            編輯
                                 </Button>
-                        </IconButton>
-                        <IconButton aria-label="delete">
-                            <Button
-                                onClick={this.DeleteType}
-                                value={FoodType_key}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<DeleteIcon />}
-                            >
-                                Delete
+                        <Button
+                            onClick={this.handleShow}
+                            id={FoodType[FoodType_key]["FoodTypeName"]}
+                            value={FoodType_key}
+                            variant="contained"
+                            color="secondary"
+                            startIcon={<DeleteIcon />}
+                        >
+                            刪除
                                 </Button>
-                        </IconButton>
                     </ListItem>
                 </Card>)
             } else {
@@ -186,27 +217,26 @@ class AddType extends Component {
                                     />}
                                 label={FoodType[FoodType_key]["FoodTypeName"]}
                             />
-                            <IconButton aria-label="Edit">
-                                <Button
-                                    
-                                    variant="contained"
-                                    color="primary"
-                                    startIcon={<EditIcon />}
-                                >
-                                    Edit
+                            <Button
+                                onClick={this.handleShow_Edit}
+                                id={FoodType[FoodType_key]["FoodTypeName"]}
+                                value={FoodType_key}
+                                variant="contained"
+                                color="primary"
+                                startIcon={<EditIcon />}
+                            >
+                                編輯
                                 </Button>
-                            </IconButton>
-                            <IconButton aria-label="delete">
-                                <Button
-                                    value={FoodType_key}
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={this.DeleteType}
-                                    startIcon={<DeleteIcon />}
-                                >
-                                    Delete
+                            <Button
+                                id={FoodType[FoodType_key]["FoodTypeName"]}
+                                value={FoodType_key}
+                                variant="contained"
+                                color="secondary"
+                                onClick={this.handleShow}
+                                startIcon={<DeleteIcon />}
+                            >
+                                刪除
                                 </Button>
-                            </IconButton>
                         </ListItem>
                     </Card>)
             }
@@ -224,8 +254,7 @@ class AddType extends Component {
                 <ListItemAvatar>
                     <Checkbox
                         id='add'
-                        defaultChecked  //預設被選
-                        // color='primary'
+                        disabled='true'
                         indeterminate
                     />
                 </ListItemAvatar>
@@ -259,7 +288,7 @@ class AddType extends Component {
         };
         $.ajax(settings).done(function (response) {
             this.ShowSetMenu();
-            toast("成功新增類別");
+            toast.success("成功新增類別");
         }.bind(this))
     }
     ShowSetMenu() {
@@ -285,9 +314,9 @@ class AddType extends Component {
             }.bind(this))
             .catch(error => console.log('error', error));
     }
-    DeleteType(event){
-        let StoreID = this.state.StoreID;
-        let FoodTypeID = event.target.value;
+    DeleteType(event) {
+        var StoreID = this.state.StoreID;
+        var FoodTypeID = this.state.FoodTypeID;
         var settings = {
             "url": API_Url + ':' + API_Port + "/DelFoodType",
             "method": "POST",
@@ -302,11 +331,35 @@ class AddType extends Component {
         };
         $.ajax(settings).done(function (response) {
             this.ShowSetMenu();
-            toast("成功刪除類別");
+            toast.success("成功刪除類別");
         }.bind(this))
     }
+    EditType(event){
+        var StoreID = this.state.StoreID;
+        var FoodTypeID = this.state.FoodTypeID;
+        var EditFoodTypeName = this.state.NewFoodTypeName;
+        var settings = {
+            "url": API_Url + ':' + API_Port + "/UpdateFoodType",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({
+                "StoreID": StoreID,
+                "FoodTypeID": FoodTypeID,
+                "FoodTypeName": EditFoodTypeName
+            }),
+        };
+        $.ajax(settings).done(function (response) {
+            this.ShowSetMenu();
+            toast.success("成功編輯類別");
+        }.bind(this))
+    }
+    handleEditChange(event){
+        this.setState({NewFoodTypeName:event.target.value})
+    }
     render() {
-
         return (
             <div className="contact-section">
                 <header className="header" style={{ height: '100%' }}>
@@ -377,6 +430,54 @@ class AddType extends Component {
 
                     </div>
                 </div>
+                <Modal show={this.state.show_Edit} onHide={this.handleClose_Edit}>
+                    <Modal.Header closeButton>
+                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>編輯視窗</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body >
+                        <TextField
+                            id="outlined-read-only-input"
+                            label="舊類別名稱"
+                            defaultValue={this.state.EditFoodTypeName}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                        />
+                        <div style={{marginTop:'12px'}}></div>
+                        <TextField
+                            required
+                            id="outlined-required"
+                            label="新類別名稱"
+                            // defaultValue="Hello World"
+                            variant="outlined"
+                            onChange={this.handleEditChange}
+                        />
+                        {/* 你確定要刪除<font style={{ color: 'red' }}></font>類別嗎？ */}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <REButton variant="secondary" onClick={this.handleClose}>
+                            關閉
+                        </REButton>
+                        <REButton variant="success" onClick={this.EditType} id={this.state.FoodTypeID}>
+                            編輯
+                        </REButton>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.show} onHide={this.handleClose_Edit}>
+                    <Modal.Header closeButton>
+                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>通知</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body >你確定要刪除<font style={{ color: 'red' }}>{this.state.DelFoodTypeName}</font>類別嗎？</Modal.Body>
+                    <Modal.Footer>
+                        <REButton variant="secondary" onClick={this.handleClose}>
+                            關閉
+                        </REButton>
+                        <REButton variant="danger" onClick={this.DeleteType} id={this.state.FoodTypeID}>
+                            刪除
+                        </REButton>
+                    </Modal.Footer>
+                </Modal>
             </div>
 
         );
