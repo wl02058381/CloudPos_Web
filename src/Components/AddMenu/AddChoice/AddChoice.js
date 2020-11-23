@@ -25,7 +25,9 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircle from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { DataGrid } from '@material-ui/data-grid';
 import { toast } from 'react-toastify'
+
 const Config = require("../../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
@@ -66,7 +68,10 @@ class AddChoice extends Component {
             EditChoiceTypeName: '',
             NewChoiceTypeName:'',
             DelChoiceTypeName:'',
-            ChoiceTypeID:''
+            ChoiceTypeID:'',
+            columns :[],
+            show:false,
+            show_Edit:false
         };
         this.handleChange = this.handleChange.bind(this)
         this.AddTypeBTN = this.AddTypeBTN.bind(this)
@@ -84,6 +89,7 @@ class AddChoice extends Component {
     handleClose() { this.setState({ show: false }) }
     handleClose_Edit() { this.setState({ show_Edit: false }) }
     handleShow(event) {
+        event.stopPropagation()
         console.log(event.currentTarget.value)
         var ChoiceTypeID = event.currentTarget.value;
         var DelChoiceTypeName = event.currentTarget.id;
@@ -91,6 +97,7 @@ class AddChoice extends Component {
         this.setState({ show: true, ChoiceTypeID: ChoiceTypeID, DelChoiceTypeName: DelChoiceTypeName })
     }
     handleShow_Edit(event) {
+        event.stopPropagation() // 防止點下編輯連手風琴都打開
         console.log(event.currentTarget.value)
         var ChoiceTypeID = event.currentTarget.value;
         var EditChoiceTypeName = event.currentTarget.id;
@@ -151,6 +158,23 @@ class AddChoice extends Component {
         // history.go(-1)
     }
     componentDidMount() {
+        const columns = [
+            { field: 'id', headerName: 'ID', width: 60 },
+            { field: 'ChoiceName', headerName: '細項名稱', width: 150 },
+            { field: 'Price', headerName: '細項價格', width: 90 },
+            {
+                field: 'EditButton',
+                headerName: 'EditButton',
+                type: 'button',
+                width: 90,
+            },{
+                field: 'DeleteButton',
+                headerName: 'DeleteButton',
+                type: 'button',
+                width: 90,
+            }
+        ];
+        this.setState({ columns: columns})
         toast.configure()
         document.title = '單選項目';
         // 取得一大包資訊
@@ -227,25 +251,37 @@ class AddChoice extends Component {
     // 顯示Choice類別
     GetChoiceTypeName() {
         var CardsList = [];
+        
         var ChoiceType = this.state.MenuInfo["ChoiceType"]
         var Choice = this.state.MenuInfo["Choice"]
-        console.log("Choice:", Choice)
+        // console.log("Choice:", Choice)
         // ChoiceType.map((e,i)=>{console.log()})
         // ChoiceTypeName_List = []
         // ChoiceTypeID_List = []
+        
         for (var ChoiceType_key in ChoiceType) {
+            var rows = []
             if (ChoiceType[ChoiceType_key]["Check"] == "0") {
                 // ChoiceTypeName_List.push(ChoiceType[key]["ChoiceTypeName"])
-                console.log(ChoiceType[ChoiceType_key]["ChoiceTypeName"])
+                // console.log(ChoiceType[ChoiceType_key]["ChoiceTypeName"])
                 var ChoiceList = eval(ChoiceType[ChoiceType_key]["ChoiceList"])
-                var CardsBaby = [];
+                // var CardsBaby = [];
                 for (var Choice_Key in ChoiceList) {
+                    console.log(Choice_Key)
                     var k = ChoiceList[Choice_Key]
-                    CardsBaby.push(<div>{Choice[k]["ChoiceName"]}  價錢：{Choice[k]["Price"]}</div>);
+                    // CardsBaby.push(<div>{Choice[k]["ChoiceName"]}  價錢：{Choice[k]["Price"]}</div>);
+                    rows.push({
+                        id: parseInt(Choice_Key) + 1,
+                        ChoiceName: Choice[k]["ChoiceName"],
+                        Price: Choice[k]["Price"],
+                        EditButton: <button>編輯</button>,
+                        DeleteButton: <button>刪除</button>
+                    })
                 }
+
                 console.log("this.state.ChoiceTypeList:", this.state.ChoiceTypeList)
                 if (this.state.ChoiceTypeList.includes(ChoiceType_key)) {
-                    CardsList.push(<Accordion>
+                    CardsList.push(<Accordion TransitionProps={{ unmountOnExit: true }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-label="Expand"
@@ -263,7 +299,9 @@ class AddChoice extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
+                            <Typography color="textSecondary">
                             <Button
+                                onFocus={(event) => event.stopPropagation()}
                                 onClick={this.handleShow_Edit}
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -273,6 +311,8 @@ class AddChoice extends Component {
                             >
                                 編輯
                                 </Button>
+                                </Typography>
+                            <Typography color="textSecondary">
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -283,16 +323,20 @@ class AddChoice extends Component {
                             >
                                 刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
-                                <div>{CardsBaby}</div>
+                                {/* <div>{CardsBaby}</div> */}
                                 {/* 小寶寶 */}
                             </Typography>
+                            <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} checkboxSelection />
+                            </div>
                         </AccordionDetails>
                     </Accordion>)
                 } else {
-                    CardsList.push(<Accordion>
+                    CardsList.push(<Accordion TransitionProps={{ unmountOnExit: true }}> 
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-label="Expand"
@@ -309,7 +353,10 @@ class AddChoice extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
+                            <Typography color="textSecondary">
+
                             <Button
+                                onFocus={(event) => event.stopPropagation()}
                                 onClick={this.handleShow_Edit}
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -317,8 +364,13 @@ class AddChoice extends Component {
                                 color="primary"
                                 startIcon={<EditIcon />}
                             >
+                                          
+
                                 編輯
                                 </Button>
+                            </Typography>
+                            <Typography color="textSecondary">
+
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -329,19 +381,23 @@ class AddChoice extends Component {
                             >
                                 刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
-                                <div>{CardsBaby}</div>
+                                {/* <div>{CardsBaby}</div> */}
                                 {/* 小寶寶 */}
                             </Typography>
+                            <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} />
+                            </div>
                         </AccordionDetails>
                     </Accordion>)
                 }
             }
 
         }
-        this.setState({ CardsList: CardsList })
+        this.setState({ CardsList: CardsList})
     }
     // 渲染新增Choice類別的卡片
     AddTypeBTN() {
@@ -463,7 +519,7 @@ class AddChoice extends Component {
                 </div>
                 <Modal show={this.state.show_Edit} onHide={this.handleClose_Edit}>
                     <Modal.Header closeButton>
-                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>編輯視窗</Modal.Title>
+                        <Modal.Title><i class="fas fa-edit"></i>編輯視窗</Modal.Title>
                     </Modal.Header>
                     <Modal.Body >
                         <TextField
@@ -484,10 +540,9 @@ class AddChoice extends Component {
                             variant="outlined"
                             onChange={this.handleEditChange}
                         />
-                        {/* 你確定要刪除<font style={{ color: 'red' }}></font>類別嗎？ */}
                     </Modal.Body>
                     <Modal.Footer>
-                        <REButton variant="secondary" onClick={this.handleClose}>
+                        <REButton variant="secondary" onClick={this.handleClose_Edit}>
                             關閉
                         </REButton>
                         <REButton variant="success" onClick={this.EditType} id={this.state.ChoiceTypeID}>
@@ -495,7 +550,8 @@ class AddChoice extends Component {
                         </REButton>
                     </Modal.Footer>
                 </Modal>
-                <Modal show={this.state.show} onHide={this.handleClose_Edit}>
+
+                <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>通知</Modal.Title>
                     </Modal.Header>

@@ -69,7 +69,9 @@ class EditRadio extends Component {
             EditChoiceTypeName: '',
             NewChoiceTypeName: '',
             DelChoiceTypeName: '',
-            ChoiceTypeID: ''
+            ChoiceTypeID: '',
+            show: false,
+            show_Edit: false
         };
         this.type = ""
         // this.ShowChoice = this.ShowChoice.bind(this)
@@ -339,6 +341,7 @@ class EditRadio extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
+                            <Typography color="textSecondary">
                             <Button
                                 onClick={this.handleShow_Edit}
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
@@ -349,6 +352,8 @@ class EditRadio extends Component {
                             >
                                 編輯
                                 </Button>
+                            </Typography>
+                            <Typography color="textSecondary">
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -359,6 +364,7 @@ class EditRadio extends Component {
                             >
                                 刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
@@ -387,6 +393,7 @@ class EditRadio extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
+                            <Typography color="textSecondary">
                             <Button
                                 onClick={this.handleShow_Edit}
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
@@ -397,6 +404,8 @@ class EditRadio extends Component {
                             >
                                 編輯
                                 </Button>
+                            </Typography>
+                            <Typography color="textSecondary">
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -407,6 +416,7 @@ class EditRadio extends Component {
                             >
                                 刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
@@ -647,7 +657,7 @@ class EditRadio extends Component {
                 </div>
                 <Modal show={this.state.show_Edit} onHide={this.handleClose_Edit}>
                     <Modal.Header closeButton>
-                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>編輯視窗</Modal.Title>
+                        <Modal.Title><i class="fas fa-edit"></i>編輯視窗</Modal.Title>
                     </Modal.Header>
                     <Modal.Body >
                         <TextField

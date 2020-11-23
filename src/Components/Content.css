@@ -103,6 +103,38 @@ img {
     height: 76px;
 }
 
-.EditBTN{
+.EditBTN {
     background-color: lawngreen !important;
+}
+
+/* .FoodImgStyle {
+    height: 100%;
+} */
+
+@media (max-height: 641px) {
+    .TabScroll {
+        overflow: Scroll;
+        height: 57vh;
+    }
+}
+
+@media (min-height: 642px) and (max-height: 767px) {
+    .TabScroll {
+        overflow: Scroll;
+        height: 60vh;
+    }
+}
+
+@media (min-height: 768px) and (max-height: 1023px) {
+    .TabScroll {
+        overflow: Scroll;
+        height: 65vh;
+    }
+}
+
+@media (min-height: 1024px) {
+    .TabScroll {
+        overflow: Scroll;
+        height: 73vh;
+    }
 }

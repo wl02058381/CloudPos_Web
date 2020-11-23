@@ -21,12 +21,14 @@ class AddMenu extends Component {
             value: '',
             StoreID: "S_725d0fd9-4875-4762-8bc8-43404d2d5775",
             FoodName: '',
-            Price: ''
+            Price: '',
+            FoodID:''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange_Name = this.handleChange_Name.bind(this);
         this.handleChange_Price = this.handleChange_Price.bind(this);
         this.AddFood = this.AddFood.bind(this);
+        this.ImageUpload = this.ImageUpload.bind(this);
     }
     backgo() {
         const history = creatHistory();
@@ -81,10 +83,6 @@ class AddMenu extends Component {
         // let FoodTypeID = FoodTypeID
         // let FoodName = FoodName
         let ImgExtension = "jpg"
-        // let Price = Price
-        // ChoiceTypeList = ChoiceTypeList.repl
-        // console.log("豪哥", JSON.stringify(ChoiceTypeList))
-        // console.log("冠冠", JSON.stringify(FoodName))
         let SoldOut = "0"
         let OffShelf = "0"
         var settings = {
@@ -108,7 +106,10 @@ class AddMenu extends Component {
         $.ajax(settings).done(function (response) {
             // alert("新增成功")
             toast.success('新增成功',{position:toast.POSITION.TOP_CENTER})
-            console.log(response);
+            console.log(response["FoodID"]);
+            var FoodID = response["FoodID"]
+            this.setState({ FoodID: FoodID})
+            this.ImageUpload();
             const history = creatHistory();
             history.goBack();
             // sessionStorage.clear()
@@ -121,6 +122,26 @@ class AddMenu extends Component {
     handleChange_Price(event) {
         // this.setState({ Price: event.target.value });
         sessionStorage.setItem('Price', event.target.value);
+    }
+    // 上傳圖片
+    ImageUpload(){
+        var myHeaders = new Headers();
+        let StoreID = this.state.StoreID
+        let FoodID = this.state.FoodID
+        myHeaders.append("image_id", FoodID);
+        myHeaders.append("store_id", StoreID);
+        var formdata = new FormData();
+        formdata.append("image", this.state.file);
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow'
+        };
+        fetch("http://163.18.26.237:8011/ImageUpload", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
     }
     render() {
         let { imagePreviewUrl } = this.state;

@@ -131,20 +131,16 @@ class AddRadio_Add extends Component {
                     variant="outlined"
                     onChange={this.handleChoiceNameChange}
                 />
-                <Col sm={1} xs={1}>
-                </Col>
-            </Row>
-            <Row style={{ marginTop: '6px' }}>
-                <Col >
-                </Col>
-                <TextField
-                    id="ChoicePrice"
-                    label="＄項目價錢"
-                    type="ChoicePrice"
-                    // autoComplete="current-password"
-                    variant="outlined"
-                    onChange={this.handleChoicePriceChange}
-                />
+                 < TextField
+                 id = "ChoicePrice"
+                 label = "＄項目價錢"
+                 type = "ChoicePrice"
+                 // autoComplete="current-password"
+                 variant = "outlined"
+                 onChange = {
+                     this.handleChoicePriceChange
+                 }
+                 />
                 <Col sm={1} xs={1}>
                 </Col>
             </Row>
@@ -216,22 +212,27 @@ class AddRadio_Add extends Component {
                         disabled
                         onChange={this.handleChoiceNameChange}
                     />
+                    < TextField
+                    id = "outlined-password-input"
+                    label = "＄項目價錢"
+                    type = "ChoicePrice"
+                    // autoComplete="current-password"
+                    value = {
+                        this.state.ChoicePrice
+                    }
+                    variant = "outlined"
+                    disabled
+                    onChange = {
+                        this.handleChoicePriceChange
+                    }
+                    />
                     <Col sm={1} xs={1}>
                     </Col>
                 </Row>
                 <Row style={{ marginTop: '6px' }}>
                     <Col >
                     </Col>
-                    <TextField
-                        id="outlined-password-input"
-                        label="＄項目價錢"
-                        type="ChoicePrice"
-                        // autoComplete="current-password"
-                        value={this.state.ChoicePrice}
-                        variant="outlined"
-                        disabled
-                        onChange={this.handleChoicePriceChange}
-                    />
+                    
                     <Col sm={1} xs={1}>
                     </Col>
                 </Row>

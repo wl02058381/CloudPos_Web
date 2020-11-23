@@ -228,7 +228,7 @@ class UpdateMenu extends Component {
             var FoodTypeName = FoodType[key].FoodTypeName
             // $('#uncontrolled-tab-example').append('<Tab eventKey="home" title="Home"><startpage /></Tab>')\
             var FoodItem = this.FoodIDList(JSON.parse(FoodType[key].FoodList), ChoiceJSON, ChoiceTypeName_List, FoodType_List)
-            Tab.push(<Tab id="Tab" eventKey={FoodTypeName} title={FoodTypeName}>{FoodItem}</Tab>)
+            Tab.push(<Tab className="TabScroll" id="Tab" eventKey={FoodTypeName} title={FoodTypeName}>{FoodItem}</Tab>)
         }
         console.log("救命：", FoodType_List)
         this.setState({
@@ -273,8 +273,9 @@ class UpdateMenu extends Component {
             // console.log("ChoiceList_List:", this.state.ChoiceList_List)
             //冠穎
             var Price = FoodItem["Price"] //價錢
-            var img = <Col><div id="ImgColor" ></div></Col>;
+            var img = <Col><div id="ImgColor" ><img id="FoodImgStyle" src={`${Config.Post_IP.ImgURL}${this.state.StoreID}/${FoodID}`} /></div></Col>;//餐點圖片
             var FoodName_Price = <Col><div id="FoodTxt"><p id="FoodName">{FoodItem.FoodName}</p><br /><p id="FoodPrice">${FoodItem.Price}</p></div></Col>;
+            // sessionStorage.setItem('ImgSrc', `${Config.Post_IP.ImgURL}${this.state.StoreID}/${FoodID}`)
             //要傳的值
             var data = {
                 FoodID: FoodID,
@@ -427,8 +428,7 @@ class UpdateMenu extends Component {
                     </div>
                 </form>
 
-
-                <div id="FoodType" Style="overflow:scroll width:20px">
+                <div id="FoodType" Style="overflow:scroll">
                     <Tabs defaultActiveKey={this.state.FoodTypeName} id="uncontrolled-tab-example" >
                         {this.state.Tabs}
                         {/* <Tab id="Tab" eventKey="123" title="123">

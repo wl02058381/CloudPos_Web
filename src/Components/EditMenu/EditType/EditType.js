@@ -48,7 +48,9 @@ class EditType extends Component {
             CardsList: [],
             check: [],
             FoodTypeName_List: [],
-            FoodEdit: null
+            FoodEdit: null,
+            show: false,
+            show_Edit: false
         };
         this.reload = this.reload.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)

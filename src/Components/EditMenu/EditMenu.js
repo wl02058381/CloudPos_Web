@@ -82,6 +82,10 @@ class EditMenu extends Component {
         }
         var FoodName = sessionStorage.getItem('FoodName');
         var Price = sessionStorage.getItem('Price');
+        var ImgSrc = `${Config.Post_IP.ImgURL}${this.state.StoreID}/${this.state.FoodID}`
+        this.setState({
+            imagePreviewUrl: ImgSrc
+        });
         console.log("FoodName:", FoodName)
         $('#inputName').val(FoodName);
         $('#inputProjectLeader').val(Price);
@@ -209,15 +213,41 @@ class EditMenu extends Component {
             toast.success('編輯成功', {
                 position: toast.POSITION.TOP_CENTER
             })
+            console.log(response["FoodID"]);
+            var FoodID = response["FoodID"]
+            this.setState({
+                FoodID: FoodID
+            })
+            this.ImageUpload();
             console.log(response);
             // sessionStorage.clear()
         }.bind(this))
+    }
+    // 上傳圖片
+    ImageUpload() {
+        var myHeaders = new Headers();
+        let StoreID = this.state.StoreID
+        let FoodID = this.state.FoodID
+        myHeaders.append("image_id", FoodID);
+        myHeaders.append("store_id", StoreID);
+        var formdata = new FormData();
+        formdata.append("image", this.state.file);
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow'
+        };
+        fetch("http://163.18.26.237:8011/ImageUpload", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
     }
     render() {
         let { imagePreviewUrl } = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {
-            $imagePreview = (<img src={imagePreviewUrl} />);
+            $imagePreview = ( < img src={imagePreviewUrl} />);
         } else {
             $imagePreview = (<div className="previewText">請選擇圖片即可預覽圖片</div>);
         }
@@ -276,7 +306,8 @@ class EditMenu extends Component {
                             <form>
                                 <div className="row" Style="width:100%;height:auto">
                                     {/* <img id="img" src={ad} Style="width:50%;margin:0 1em 1em 0;" class="img-thumbnail rounded float-left" alt="..."></img> */}
-                                    <div Style="width:50%;margin:0 1em 1em 0;" className="img-thumbnail rounded float-left imgPreview">
+                                    < div Style = "width:60%;margin:0 1em 1em 0;"
+                                    className = "img-thumbnail rounded float-left imgPreview" >
                                         {$imagePreview}
                                     </div>
                                     <input onChange={(e) => this.handleImageChange(e)} type="file" accept="image/*" Style="float:right;width:45%;height:45%;" class="btn btn-primary" Style="font-size:18px;min-width:-webkit-fill-available"></input>

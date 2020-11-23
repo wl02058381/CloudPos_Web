@@ -66,7 +66,9 @@ class AddRadio extends Component {
             EditChoiceTypeName: '',
             NewChoiceTypeName:'',
             DelChoiceTypeName:'',
-            ChoiceTypeID:''
+            ChoiceTypeID:'',
+            show: false,
+            show_Edit: false
         };
         this.handleChange = this.handleChange.bind(this)
         this.AddTypeBTN = this.AddTypeBTN.bind(this)
@@ -263,6 +265,7 @@ class AddRadio extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
+                            <Typography color="textSecondary">
                             <Button
                                 onClick={this.handleShow_Edit}
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
@@ -273,6 +276,8 @@ class AddRadio extends Component {
                             >
                                 編輯
                                 </Button>
+                            </Typography>
+                            <Typography color="textSecondary">
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -283,6 +288,7 @@ class AddRadio extends Component {
                             >
                                 刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
@@ -309,6 +315,7 @@ class AddRadio extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
+                            <Typography color="textSecondary">
                             <Button
                                 onClick={this.handleShow_Edit}
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
@@ -319,6 +326,8 @@ class AddRadio extends Component {
                             >
                                 編輯
                                 </Button>
+                            </Typography>
+                            <Typography color="textSecondary">
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -329,6 +338,7 @@ class AddRadio extends Component {
                             >
                                 刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
@@ -463,7 +473,7 @@ class AddRadio extends Component {
                 </div>
                 <Modal show={this.state.show_Edit} onHide={this.handleClose_Edit}>
                     <Modal.Header closeButton>
-                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>編輯視窗</Modal.Title>
+                        <Modal.Title><i class="fas fa-edit"></i>編輯視窗</Modal.Title>
                     </Modal.Header>
                     <Modal.Body >
                         <TextField
@@ -487,7 +497,7 @@ class AddRadio extends Component {
                         {/* 你確定要刪除<font style={{ color: 'red' }}></font>類別嗎？ */}
                     </Modal.Body>
                     <Modal.Footer>
-                        <REButton variant="secondary" onClick={this.handleClose}>
+                        <REButton variant="secondary" onClick={this.handleClose_Edit}>
                             關閉
                         </REButton>
                         <REButton variant="success" onClick={this.EditType} id={this.state.ChoiceTypeID}>
@@ -495,7 +505,9 @@ class AddRadio extends Component {
                         </REButton>
                     </Modal.Footer>
                 </Modal>
-                <Modal show={this.state.show} onHide={this.handleClose_Edit}>
+
+
+                <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>通知</Modal.Title>
                     </Modal.Header>

@@ -70,7 +70,9 @@ class EditChoice extends Component {
             EditChoiceTypeName: '',
             NewChoiceTypeName: '',
             DelChoiceTypeName: '',
-            ChoiceTypeID: ''
+            ChoiceTypeID: '',
+            show: false,
+            show_Edit: false
         };
         this.type = ""
         // this.ShowChoice = this.ShowChoice.bind(this)
@@ -90,6 +92,7 @@ class EditChoice extends Component {
     handleClose() { this.setState({ show: false }) }
     handleClose_Edit() { this.setState({ show_Edit: false }) }
     handleShow(event) {
+        event.stopPropagation()
         console.log(event.currentTarget.value)
         var ChoiceTypeID = event.currentTarget.value;
         var DelChoiceTypeName = event.currentTarget.id;
@@ -97,6 +100,7 @@ class EditChoice extends Component {
         this.setState({ show: true, ChoiceTypeID: ChoiceTypeID, DelChoiceTypeName: DelChoiceTypeName })
     }
     handleShow_Edit(event) {
+        event.stopPropagation()
         console.log(event.currentTarget.value)
         var ChoiceTypeID = event.currentTarget.value;
         var EditChoiceTypeName = event.currentTarget.id;
@@ -340,6 +344,7 @@ class EditChoice extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
+                            <Typography color="textSecondary">
                             <Button
                                 onClick={this.handleShow_Edit}
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
@@ -350,6 +355,8 @@ class EditChoice extends Component {
                             >
                                 編輯
                                 </Button>
+                            </Typography>
+                            <Typography color="textSecondary">
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -360,6 +367,7 @@ class EditChoice extends Component {
                             >
                                 刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
@@ -388,6 +396,7 @@ class EditChoice extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
+                            <Typography color="textSecondary">
                             <Button
                                 onClick={this.handleShow_Edit}
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
@@ -398,6 +407,8 @@ class EditChoice extends Component {
                             >
                                 編輯
                                 </Button>
+                            </Typography>
+                            <Typography color="textSecondary">
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -408,6 +419,7 @@ class EditChoice extends Component {
                             >
                                 刪除
                                 </Button>
+                                </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
@@ -608,7 +620,7 @@ class EditChoice extends Component {
                 </div>
                 <Modal show={this.state.show_Edit} onHide={this.handleClose_Edit}>
                     <Modal.Header closeButton>
-                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>編輯視窗</Modal.Title>
+                        <Modal.Title><i class="fas fa-edit"></i>編輯視窗</Modal.Title>
                     </Modal.Header>
                     <Modal.Body >
                         <TextField
