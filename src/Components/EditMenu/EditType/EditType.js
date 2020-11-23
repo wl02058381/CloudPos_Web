@@ -14,7 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import ListItem from '@material-ui/core/ListItem';
 import '../../Content.css'
 class EditType extends Component {
     constructor(props) {
@@ -72,10 +72,20 @@ class EditType extends Component {
         if (FoodEdit == null) {
             var FoodTypeName_List = []
             // var FoodTypeName_List = sessionStorage.getItem('FoodTypeName_List');
+            console.log(Food)
+            console.log(this.state.FoodID)
+            if (this.state.FoodID !=undefined & this.state.FoodID != null){
+                sessionStorage.setItem("FoodID", this.state.FoodID)    
+            }
+            var FoodID = sessionStorage.getItem("FoodID")
             for (var Food_key in Food) {
-                // console.log("aaaa:", FoodType_key)
-                FoodTypeName_List = Food[Food_key]["FoodTypeID"]
-            } this.setState({ FoodTypeName_List: FoodTypeName_List }, function () {
+                if (Food_key == FoodID){
+                    console.log("aaaa:", Food_key)
+                    FoodTypeName_List = Food[Food_key]["FoodTypeID"]
+                }
+            }
+            console.log(FoodTypeName_List)
+            this.setState({ FoodTypeName_List: FoodTypeName_List }, function () {
                 this.GetFoodTypeName()
             })
         } else if (FoodEdit == 'true') {
@@ -91,42 +101,45 @@ class EditType extends Component {
         console.log(FoodTypeName_List)
         for (var FoodType_key in FoodType) {
             console.log(FoodType[FoodType_key]["FoodTypeName"])
+            console.log(FoodType_key)
             if (FoodTypeName_List.includes(FoodType_key)) {
-                CardsList.push(<Accordion>
-                    <FormControlLabel
-                        aria-label="Acknowledge"
-                        onClick={(event) => event.stopPropagation()}
-                        onFocus={(event) => event.stopPropagation()}
-                        control={
-                            <Checkbox
-                                id={FoodType_key}
-                                defaultChecked  //預設被選
-                                onChange={this.handleChange}
-                                // color="primary"
-                                indeterminate
-                            />}
-                        label={FoodType[FoodType_key]["FoodTypeName"]}
-                    />
-                    {/* </AccordionSummary> */}
-                </Accordion>)
+                CardsList.push(<Card>
+                    <ListItem>
+                        <FormControlLabel
+                            aria-label="Acknowledge"
+                            onClick={(event) => event.stopPropagation()}
+                            onFocus={(event) => event.stopPropagation()}
+                            control={
+                                <Checkbox
+                                    id={FoodType_key}
+                                    defaultChecked //預設被選
+                                    onChange={this.handleChange}
+                                    // color="default"
+                                    indeterminate
+                                />}
+                            label={FoodType[FoodType_key]["FoodTypeName"]}
+                        />
+                    </ListItem>
+                </Card>)
             }
             else {
-                CardsList.push(<Accordion>
-                    <FormControlLabel
-                        aria-label="Acknowledge"
-                        onClick={(event) => event.stopPropagation()}
-                        onFocus={(event) => event.stopPropagation()}
-                        control={
-                            <Checkbox
-                                id={FoodType_key}
-                                onChange={this.handleChange}
-                                // color="primary"
-                                indeterminate
-                            />}
-                        label={FoodType[FoodType_key]["FoodTypeName"]}
-                    />
-                    {/* </AccordionSummary> */}
-                </Accordion>)
+                CardsList.push(<Card>
+                    <ListItem>
+                        <FormControlLabel
+                            aria-label="Acknowledge"
+                            onClick={(event) => event.stopPropagation()}
+                            onFocus={(event) => event.stopPropagation()}
+                            control={
+                                <Checkbox
+                                    id={FoodType_key}
+                                    onChange={this.handleChange}
+                                    // color="default"
+                                    indeterminate
+                                />}
+                            label={FoodType[FoodType_key]["FoodTypeName"]}
+                        />
+                    </ListItem>
+                </Card>)
             }
         }
         this.setState({ CardsList: CardsList })
@@ -140,38 +153,45 @@ class EditType extends Component {
         for (var FoodType_key in FoodType) {
             console.log(FoodType[FoodType_key])
             if (FoodTypeName_List.includes(FoodType[FoodType_key]["FoodTypeID"])) {
-                CardsList.push(<Accordion>
-                    <FormControlLabel
-                        aria-label="Acknowledge"
-                        onClick={(event) => event.stopPropagation()}
-                        onFocus={(event) => event.stopPropagation()}
-                        control={
-                            <Checkbox
-                                id={FoodType_key}
-                                defaultChecked  //預設被選
-                                onChange={this.handleChange}
-                                indeterminate
-                            />}
-                        label={FoodType[FoodType_key]["FoodTypeName"]}
-                    />
-                </Accordion>)
+                CardsList.push(
+                <Card>
+                    <ListItem>
+                        <FormControlLabel
+                            aria-label="Acknowledge"
+                            onClick={(event) => event.stopPropagation()}
+                            onFocus={(event) => event.stopPropagation()}
+                            control={
+                                <Checkbox
+                                    id={FoodType_key}
+                                    defaultChecked //預設被選
+                                    onChange={this.handleChange}
+                                    // color="default"
+                                    indeterminate
+                                />}
+                            label={FoodType[FoodType_key]["FoodTypeName"]}
+                        />
+                    </ListItem>
+                </Card>
+                )
             }
             else {
-                CardsList.push(<Accordion>
-                    <FormControlLabel
-                        aria-label="Acknowledge"
-                        onClick={(event) => event.stopPropagation()}
-                        onFocus={(event) => event.stopPropagation()}
-                        control={
-                            <Checkbox
-                                id={FoodType_key}
-                                onChange={this.handleChange}
-                                // color="primary"
-                                indeterminate
-                            />}
-                        label={FoodType[FoodType_key]["FoodTypeName"]}
-                    />
-                </Accordion>)
+                CardsList.push(<Card>
+                    <ListItem>
+                        <FormControlLabel
+                            aria-label="Acknowledge"
+                            onClick={(event) => event.stopPropagation()}
+                            onFocus={(event) => event.stopPropagation()}
+                            control={
+                                <Checkbox
+                                    id={FoodType_key}
+                                    onChange={this.handleChange}
+                                    // color="default"
+                                    indeterminate
+                                />}
+                            label={FoodType[FoodType_key]["FoodTypeName"]}
+                        />
+                    </ListItem>
+                </Card>)
             }
         }
         this.setState({ CardsList: CardsList })
@@ -306,12 +326,12 @@ class EditType extends Component {
                                     {/* <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                         </input> */}
                                     <div className="input-group-append" >
-                                        <button className="btn btn-navbar" type="submit">
+                                        {/* <button className="btn btn-navbar" type="submit">
                                             <i className="fas fa-search"></i>
                                         </button>
                                         <button onClick={this.handleOnClick} class="btn btn-app" style={{ position: "absolute" }}>
                                             <i className="fas fa-edit"></i> Add
-                                </button>
+                                </button> */}
                                     </div>
                                 </div>
                                 <div className="form-group">

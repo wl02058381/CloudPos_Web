@@ -3,9 +3,8 @@ import React, { Component } from 'react';
 import { Button, Container, Row, Col, Form, Card, FormControl } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
-import back from '../../../images/back.svg';
-import menu from '../../../images/menu.jpg';
-import ad from '../../../images/remove-ads.png';
+import back from '../../../../images/back.svg';
+import menu from '../../../../images/menu.jpg';
 import creatHistory from 'history/createHashHistory';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -17,8 +16,8 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircle from '@material-ui/icons/AddCircle';
-import '../../Content.css'
-class AddChoice extends Component {
+import '../../../Content.css'
+class AddRadio_Add extends Component {
     constructor(props) {
         super(props);
         this.type = ""
@@ -63,7 +62,7 @@ class AddChoice extends Component {
         // 取得一大包資訊
         var MenuInfo = sessionStorage.getItem('MenuInfo');
         this.state.MenuInfo = JSON.parse(MenuInfo);
-        // console.log("MenuInfo:", MenuInfo)
+        console.log("MenuInfo:", MenuInfo)
         this.type = "checkbox"
         // 取得ChoiceTypeList 更新按鈕資訊
         var ChoiceTypeList = sessionStorage.getItem('ChoiceTypeList');
@@ -121,7 +120,7 @@ class AddChoice extends Component {
             var CardsBaby = [];
             for (var Choice_Key in ChoiceList) {
                 var k = ChoiceList[Choice_Key]
-                CardsBaby.push(<div>{Choice[k]["ChoiceName"]}  價錢：{Choice[k]["Price"]}</div>);
+                CardsBaby.push(<div>{Choice[k]["ChoiceName"]}</div>);
             }
             console.log("this.state.ChoiceTypeList:", this.state.ChoiceTypeList)
             if (this.state.ChoiceTypeList.includes(ChoiceType_key)){
@@ -198,54 +197,20 @@ class AddChoice extends Component {
 
                     <div style={{ backgroundColor: '#333333', height: '80%' }}>
                         <div className="headerName" id="headerName">
-                            單選項目
+                            新增複選項目
 						</div>
                     </div>
                 </header>
-                {/* <div className="col-md-6"> */}
                 <div>
                     <div className="card card-primary">
-                        {/* <div className="card-header">
-                            <h3 className="card-title">General</h3>
-                            <div className="card-tools">
-                                <button type="button" className="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                    <i className="fas fa-minus"></i></button>
-                            </div>
-                        </div> */}
-                        <div className="card-body ">
+                        {/* <div className="card-body ">
                             <form onSubmit={this.handleSubmit}>
-                                <div className="input-group input-group-sm">
-                                    <div className="searchbar" id="searchbar" />
-                                    <div class="d-flex justify-content-center h-100">
-                                        <div class="Searchbar">
-                                            <input class="search_input" type="text" name="" placeholder="Search..."></input>
-                                            <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
-                                        </div>
-                                    </div>
-                                    {/* <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                        </input> */}
-                                    <div className="input-group-append" >
-                                        {/* <button onClick={this.handleOnClick} class="btn btn-app" style={{ position: "absolute" }}> */}
-                                            <IconButton aria-label="AddCircle" size="large">
-                                            <Link to="/AddChoice_Add">
-                                                <AddCircle fontSize="large" />
-                                            </Link>
-                                            </IconButton>
-                                {/* </button> */}
-                                    </div>
-                                </div>
                                 <div className="form-group">
                                     <div style={{ marginTop: '16px' }}></div>
-                                    {this.state.CardsList}
                                     
-                                    {/* <List>
-                                        {this.state.CardsList}
-                                        {this.state.AddCard}
-                                    </List> */}
                                 </div>
-                                {/* < input type="submit" className="btn btn-block btn-success btn-lg" value="確認上傳" ></input> */}
                             </form>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
@@ -255,7 +220,7 @@ class AddChoice extends Component {
     }
 }
 
-export default AddChoice;
+export default AddRadio_Add;
 // function changeAddMenu() {
 //   // ShowMenu()
 //   $("#headerName").text("菜單新增");

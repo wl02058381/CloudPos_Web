@@ -5,7 +5,6 @@ import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import back from '../../../images/back.svg';
 import menu from '../../../images/menu.jpg';
-import ad from '../../../images/remove-ads.png';
 import creatHistory from 'history/createHashHistory';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -15,6 +14,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import IconButton from '@material-ui/core/IconButton';
+import AddCircle from '@material-ui/icons/AddCircle';
 const checkboxstatemap = new Map()
 import '../../Content.css'
 class EditChoice extends Component {
@@ -385,12 +386,11 @@ class EditChoice extends Component {
                                     {/* <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                         </input> */}
                                     <div className="input-group-append" >
-                                        <button className="btn btn-navbar" type="submit">
-                                            <i className="fas fa-search"></i>
-                                        </button>
-                                        <button onClick={this.handleOnClick} class="btn btn-app" style={{ position: "absolute" }}>
-                                            <i className="fas fa-edit"></i> Add
-                                </button>
+                                        <IconButton aria-label="AddCircle" size="large">
+                                            <Link to="/AddChoice_Add">
+                                                <AddCircle fontSize="large" />
+                                            </Link>
+                                            </IconButton>
                                     </div>
                                 </div>
                                 <div className="form-group">

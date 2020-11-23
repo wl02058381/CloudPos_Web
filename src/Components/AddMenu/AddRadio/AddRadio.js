@@ -15,6 +15,8 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import IconButton from '@material-ui/core/IconButton';
+import AddCircle from '@material-ui/icons/AddCircle';
 import '../../Content.css'
 class AddRadio extends Component {
     constructor(props) {
@@ -231,12 +233,11 @@ class AddRadio extends Component {
                                     {/* <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                         </input> */}
                                     <div className="input-group-append" >
-                                        <button className="btn btn-navbar" type="submit">
-                                            <i className="fas fa-search"></i>
-                                        </button>
-                                        <button onClick={this.handleOnClick} class="btn btn-app" style={{ position: "absolute" }}>
-                                            <i className="fas fa-edit"></i> Add
-                                </button>
+                                         <IconButton aria-label="AddCircle" size="large">
+                                            <Link to="/AddRadio_Add">
+                                                <AddCircle fontSize="large" />
+                                            </Link>
+                                            </IconButton>
                                     </div>
                                 </div>
                                 <div className="form-group">
