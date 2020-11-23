@@ -246,9 +246,11 @@ class EditType extends Component {
         console.log("第一個：", FoodTypeName_List)
         sessionStorage.setItem('FoodTypeName_List', FoodTypeName_List)
         // sessionStorage.setItem('Edit', true)
-        // this.setState({ ChoiceTypeList: ChoiceTypeList }, function () {
-        //     console.log("ChoiceTypeList:", this.state.ChoiceTypeList)
-        // })
+        this.setState({
+                    FoodTypeName_List: FoodTypeName_List
+                }, function () {
+            console.log("ChoiceTyFoodTypeName_ListpeList:", this.state.FoodTypeName_List)
+        })
         // this.setState({ ChoiceTypeList: this.state.ChoiceTypeList.push(event.target.id)})
     };
     handleSubmit(event) {

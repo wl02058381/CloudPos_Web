@@ -75,6 +75,7 @@ class AddChoice_Add extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.AddChoiceAPI = this.AddChoiceAPI.bind(this)
         this.AddChoice_Button = this.AddChoice_Button.bind(this)
+        this.ShowSetMenu = this.ShowSetMenu.bind(this)
     }
     backgo() {
         // <Link to="/" />
@@ -93,9 +94,10 @@ class AddChoice_Add extends Component {
         // console.log("MenuInfo:", MenuInfo)
         var ChoiceType = this.state.MenuInfo["ChoiceType"]
         for (var ChoiceType_key in ChoiceType) {
-            console.log(ChoiceType)
-            ChoiceType_List.push(ChoiceType_key)
-            MenuInfoCard.push(<MenuItem value={ChoiceType_key}>{ChoiceType[ChoiceType_key]["ChoiceTypeName"]}</MenuItem>)
+            if (ChoiceType[ChoiceType_key]["Check"] == "0"){
+                ChoiceType_List.push(ChoiceType_key)
+                MenuInfoCard.push(<MenuItem value={ChoiceType_key}>{ChoiceType[ChoiceType_key]["ChoiceTypeName"]}</MenuItem>)
+            }
         }
         this.setState({ ChoiceType_List: ChoiceType_List, MenuInfoCard: MenuInfoCard})
     }
@@ -190,14 +192,14 @@ class AddChoice_Add extends Component {
                 <Row style={{ marginTop: '12px' }}>
                     <Col sm={2} xs={2}>
                     </Col>
-                    <Col sm={3} xs={3}>
+                    <Col sm={3} xs={3} style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
                         {this.state.ChoiceName}
                     </Col>
-                    <Col>
+                    <Col style={{ marginTop: '18px' ,borderTopStyle:'solid',borderWidth:'2px',paddingBottom:'12px'}}>
 
                     </Col>
-                    <Col sm={2} xs={2}>
-                        <KeyboardArrowDownIcon />
+                    <Col sm={2} xs={2} style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
+                        {/* <KeyboardArrowDownIcon /> */}
                     </Col>
                 </Row>
                 <Row style={{ marginTop: '12px' }}>
@@ -288,8 +290,7 @@ class AddChoice_Add extends Component {
             }),
         };
         $.ajax(settings).done(function (response) {
-            // this.ShowSetMenu();
-            
+            this.ShowSetMenu();
         }.bind(this))
     }
     AddChoice_Button(){
@@ -300,7 +301,32 @@ class AddChoice_Add extends Component {
             // console.log(i)
             this.AddChoiceAPI(ChoiceName_List[i],ChoicePrice_List[i])
         }
+        // this.ShowSetMenu();
         toast.success("成功新增單選項目");
+        
+    }
+    ShowSetMenu() {
+        console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({ "StoreID": "S_725d0fd9-4875-4762-8bc8-43404d2d5775" });
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+        fetch(API_Url + ':' + API_Port + "/ShowSetMenu", requestOptions)
+            .then(response => response.text())
+            .then(function (result) {
+                var MenuInfo = JSON.parse(result)
+                console.log(MenuInfo)
+                sessionStorage.setItem('MenuInfo', JSON.stringify(MenuInfo));
+                this.setState({ MenuInfo: MenuInfo })
+                // window.location.reload()
+                // event.preventDefault();
+            }.bind(this))
+            .catch(error => console.log('error', error));
     }
     render() {
         return (
@@ -325,7 +351,7 @@ class AddChoice_Add extends Component {
                 <div>
                     <Container>
 
-                        <Row style={{ marginTop: '18px' }}>
+                        <Row style={{ marginTop: '18px' ,borderBottomStyle:'solid',borderWidth:'2px',paddingBottom:'12px'}}>
                             <Col sm={1} xs={3}>
                                 類別名稱
                             </Col>
@@ -364,7 +390,7 @@ class AddChoice_Add extends Component {
                                 /> */}
                             </Col>
                         </Row>
-                        <Row style={{ marginTop: '18px' }}>
+                        <Row style={{ marginTop: '18px'}}>
                             <Col>
                                 單選項目
                             </Col>
@@ -375,16 +401,16 @@ class AddChoice_Add extends Component {
                                 {/* xs=6 md=4 */}
                             </Col>
                         </Row>
-                        <Row style={{ marginTop: '12px' }}>
+                        <Row >
                             <Col sm={2} xs={2}>
                             </Col>
-                            <Col sm={3} xs={3}>
+                            <Col sm={3} xs={3} style={{ marginTop: '12px', borderBottomStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
                                 新增項目
                             </Col>
-                            <Col>
+                            <Col style={{ marginTop: '12px', borderBottomStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
 
                             </Col>
-                            <Col sm={4} xs={6}>
+                            <Col sm={4} xs={6} style={{ marginTop: '12px', borderBottomStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
                                 <Button
                                     variant="contained"
                                     color="primary"
