@@ -69,7 +69,7 @@ class AddChoice_Add extends Component {
             AddChoiceCard_Success: [],
             MenuItem: [],
             ChoicePrice: "",
-            ChoiceName: "",
+            // ChoiceName: "",
             ChoicePrice_List: [],
             ChoiceName_List: [],
             selectValue: '',
@@ -216,9 +216,9 @@ class AddChoice_Add extends Component {
                 <Row style={{ marginTop: '12px' }}>
                     <Col sm={2} xs={2}>
                     </Col>
-                    <Col sm={3} xs={3} style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
+                    {/* <Col sm={3} xs={3} style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
                         {this.state.ChoiceName}
-                    </Col>
+                    </Col> */}
                     <Col style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
 
                     </Col>
@@ -270,6 +270,7 @@ class AddChoice_Add extends Component {
             $('#ChoiceName').val('')
             $('#ChoicePrice').val('')
             toast.success("成功新增單選項目");
+            this.setState({ AddChoiceCard: [] })
             this.ShowSetMenu();
             // const history = creatHistory();
             // history.goBack()
@@ -287,7 +288,7 @@ class AddChoice_Add extends Component {
     }
     handleChoicePriceChange1(event) {
         // $("#ChoicePrice").val($("#ChoicePrice").val().replace(/[^0-9]/g, ''))
-        e.target.value = e.target.value.replace(/[^0-9]/g, '')
+        event.target.value = event.target.value.replace(/[^0-9]/g, '')
         this.setState({ ChoicePrice: event.target.value })
     }
     // 選單改變
@@ -347,10 +348,11 @@ class AddChoice_Add extends Component {
 
                     <TextField
                         id={Choice[ChoiceID]["ChoiceID"] + '_ChoiceName'}
-                        label="項目名稱"
-                        // type="ChoiceName"
+                        // label="項目名稱"
+                        // class="input-group"
+                        type="ChoiceName"
                         // autoComplete="current-password"
-                        defaultValue={Choice[ChoiceID]["ChoiceName"]}
+                        value={Choice[ChoiceID]["ChoiceName"]}
                         // defaultValue={ChoiceName}
                         variant="outlined"
                     // value={Choice[ChoiceID]["ChoiceName"]}
@@ -360,10 +362,11 @@ class AddChoice_Add extends Component {
                     < TextField
                         id={Choice[ChoiceID]["ChoiceID"] + '_Price'}
                         label="＄項目價錢"
+                        // class="input-group"
                         // inputRef={(input) => this.inputChoiceName = input}
-                        // type="ChoicePrice"
+                        type="ChoicePrice"
                         // autoComplete="current-password"
-                        defaultValue={Choice[ChoiceID]["Price"]}
+                        value={Choice[ChoiceID]["Price"]}
                         // defaultValue = {Price}
                         variant="outlined"
                         // value={this.state.pricevalue}
@@ -394,7 +397,7 @@ class AddChoice_Add extends Component {
                         variant="contained"
                         size="large"
                         color="secondary"
-                        onClick={this.DeleteChoice}
+                        onClick={this.DeleteChoice(i)}
                         startIcon={<DeleteSweep />}
                     >
                         刪除

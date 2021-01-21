@@ -66,7 +66,7 @@ class AddRadio_Add extends Component {
             AddChoiceCard_Success: [],
             MenuItem: [],
             ChoicePrice: "",
-            ChoiceName: "",
+            // ChoiceName: "",
             ChoicePrice_List: [],
             ChoiceName_List: [],
             selectValue: '',
@@ -218,9 +218,9 @@ class AddRadio_Add extends Component {
                 <Row style={{ marginTop: '12px' }}>
                     <Col sm={2} xs={2}>
                     </Col>
-                    <Col sm={3} xs={3} style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
+                    {/* <Col sm={3} xs={3} style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
                         {this.state.ChoiceName}
-                    </Col>
+                    </Col> */}
                     <Col style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
 
                     </Col>
@@ -269,6 +269,7 @@ class AddRadio_Add extends Component {
             $('#ChoiceName').val('')
             $('#ChoicePrice').val('')
             toast.success("成功新增複選項目");
+            this.setState({ AddChoiceCard: [] })
             this.ShowSetMenu();
         })
         return (AddChoiceCard_Success)
@@ -341,6 +342,7 @@ class AddRadio_Add extends Component {
                     <TextField
                         id={Choice[ChoiceID]["ChoiceID"] + '_ChoiceName'}
                         label="項目名稱"
+                        // class="input-group"
                         type="ChoiceName"
                         // autoComplete="current-password"
                         defaultValue={Choice[ChoiceID]["ChoiceName"]}
@@ -348,9 +350,10 @@ class AddRadio_Add extends Component {
                     // disabled
                     // onChange={this.handleChoiceNameChange}
                     />
-                    < TextField
+                    <TextField
                         id={Choice[ChoiceID]["ChoiceID"] + '_Price'}
                         label="＄項目價錢"
+                        // class="input-group"
                         type="ChoicePrice"
                         // autoComplete="current-password"
                         defaultValue={Choice[ChoiceID]["Price"]}
@@ -578,11 +581,11 @@ class AddRadio_Add extends Component {
 
                         <Row style={{ marginTop: '18px', borderBottomStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}>
                             <Col sm={1} xs={3}>
-                                項目名稱
+                                類別名稱
                             </Col>
                             <Col sm={11} xs={8}>
                                 <FormControl variant="outlined" fullWidth>
-                                    <InputLabel id="demo-simple-select-outlined-label">項目名稱</InputLabel>
+                                    <InputLabel id="demo-simple-select-outlined-label">類別名稱</InputLabel>
                                     <Select
                                         autoWidth={true}
                                         labelId="demo-simple-select-outlined-label"
