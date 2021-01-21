@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import REButton from 'react-bootstrap/Button';
 import $ from 'jquery';
 import back from '../../../images/back.svg';
-import menu from '../../../images/menu.jpg';
+import menu from '../../../images/menu.png';
 import creatHistory from 'history/createHashHistory';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -26,11 +26,24 @@ import EditIcon from '@material-ui/icons/Edit';
 import { toast } from 'react-toastify'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import TextField from '@material-ui/core/TextField';
+import {
+    DataGrid
+} from '@material-ui/data-grid';
 const Config = require("../../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
 const checkboxstatemap = new Map()
 import '../../Content.css'
+import { isThisHour } from 'date-fns';
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 class EditRadio extends Component {
 
     constructor(props) {
@@ -52,7 +65,7 @@ class EditRadio extends Component {
             imagePreviewUrl: '',
             value: '',
             Price: Price,
-            StoreID: "S_725d0fd9-4875-4762-8bc8-43404d2d5775",
+            StoreID: "",
             FoodID: FoodID,
             FoodName: FoodName,
             ChoiceID: ChoiceID,
@@ -71,7 +84,10 @@ class EditRadio extends Component {
             DelChoiceTypeName: '',
             ChoiceTypeID: '',
             show: false,
-            show_Edit: false
+            show_Edit: false,
+            cancelshow: false,
+            columns: [],
+            AddCard: null
         };
         this.type = ""
         // this.ShowChoice = this.ShowChoice.bind(this)
@@ -84,13 +100,20 @@ class EditRadio extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleShow_Edit = this.handleShow_Edit.bind(this);
         this.handleClose_Edit = this.handleClose_Edit.bind(this);
-        this.EditType = this.EditType.bind(this);
+        this.EditRadio = this.EditRadio.bind(this);
         this.handleEditChange = this.handleEditChange.bind(this);
-        this.DeleteType = this.DeleteType.bind(this)
+        this.DeleteRadio = this.DeleteRadio.bind(this)
+        this.handleShow_cancel = this.handleShow_cancel.bind(this);
+        this.handleClose_cancel = this.handleClose_cancel.bind(this);
+        this.handleTextChange = this.handleTextChange.bind(this);
+        this.AddTypeBTN = this.AddTypeBTN.bind(this);
+        this.AddTypeAPI = this.AddTypeAPI.bind(this);
     }
     handleClose() { this.setState({ show: false }) }
     handleClose_Edit() { this.setState({ show_Edit: false }) }
+    handleClose_cancel() { this.setState({ cancelshow: false }) }
     handleShow(event) {
+        event.stopPropagation()
         console.log(event.currentTarget.value)
         var ChoiceTypeID = event.currentTarget.value;
         var DelChoiceTypeName = event.currentTarget.id;
@@ -98,13 +121,19 @@ class EditRadio extends Component {
         this.setState({ show: true, ChoiceTypeID: ChoiceTypeID, DelChoiceTypeName: DelChoiceTypeName })
     }
     handleShow_Edit(event) {
+        event.stopPropagation()
         console.log(event.currentTarget.value)
         var ChoiceTypeID = event.currentTarget.value;
         var EditChoiceTypeName = event.currentTarget.id;
         // this.setState({ })
         this.setState({ show_Edit: true, ChoiceTypeID: ChoiceTypeID, EditChoiceTypeName: EditChoiceTypeName })
     }
-    EditType(event) {
+    handleShow_cancel(event) {
+        // event.stopPropagation()
+        event.preventDefault()
+        this.setState({ cancelshow: true })
+    }
+    EditRadio(event) {
         var StoreID = this.state.StoreID;
         var ChoiceTypeID = this.state.ChoiceTypeID;
         var NewChoiceTypeName = this.state.NewChoiceTypeName;
@@ -128,9 +157,10 @@ class EditRadio extends Component {
             toast.success("成功編輯類別");
         }.bind(this))
     }
-    DeleteType(event) {
+    DeleteRadio(event) {
         var StoreID = this.state.StoreID;
         var ChoiceTypeID = this.state.ChoiceTypeID;
+        var ChoiceTypeList = this.state.ChoiceTypeList
         var settings = {
             "url": API_Url + ':' + API_Port + "/DelChoiceType",
             "method": "POST",
@@ -144,10 +174,28 @@ class EditRadio extends Component {
             }),
         };
         $.ajax(settings).done(function (response) {
-            this.ShowSetMenu();
-            toast.success("成功刪除類別");
+            console.log("gg:", ChoiceTypeList)
+            if (ChoiceTypeList != undefined & ChoiceTypeList != null & ChoiceTypeList.length != 0) {
+                ChoiceTypeList = eval(ChoiceTypeList).filter(function (item) {
+                    return item != ChoiceTypeID
+                })
+            }
+            this.setState({
+                ChoiceTypeList: ChoiceTypeList
+            }, function () {
+                this.ShowSetMenu();
+                toast.success('成功刪除類別', {
+                    position: "top-center",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true
+                });
+            })
         }.bind(this))
     }
+
     handleEditChange(event) {
         this.setState({ NewChoiceTypeName: event.target.value })
     }
@@ -155,10 +203,12 @@ class EditRadio extends Component {
         this.setState({ ChoiceTypeName: event.target.value })
     }
     ShowSetMenu() {
+        
+        var StoreID = getParameterByName("s");
         console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        var raw = JSON.stringify({ "StoreID": "S_725d0fd9-4875-4762-8bc8-43404d2d5775" });
+        var raw = JSON.stringify({ "StoreID": StoreID });
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -200,7 +250,7 @@ class EditRadio extends Component {
         </Card>)
         this.setState({ AddCard: AddCard })
     }
-    // Post新增類別的API
+    // Post新增項目的API
     AddTypeAPI() {
         let StoreID = this.state.StoreID;
         let ChoiceTypeName = this.state.ChoiceTypeName;
@@ -220,7 +270,15 @@ class EditRadio extends Component {
         };
         $.ajax(settings).done(function (response) {
             this.ShowSetMenu();
-            toast.success("成功新增類別");
+            toast.success('成功新增項目', {
+                position: "top-center",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+            
         }.bind(this))
     }
     backgo() {
@@ -230,24 +288,34 @@ class EditRadio extends Component {
         // history.go(-1)
     }
     componentDidMount() {
+        toast.configure()
+        const columns = [
+            { field: 'id', headerName: 'ID', width: 60 },
+            { field: 'ChoiceName', headerName: '細項名稱', width: 150 },
+            { field: 'Price', headerName: '細項價格', width: 100 }
+        ];
         document.title = '複選項目';
+        var StoreID = getParameterByName("s");
+        this.setState({
+            StoreID: StoreID
+        })
         //判斷有無修改過
         var Edit = sessionStorage.getItem('Edit')
-        console.log(Edit)
-        this.setState({ Edit: Edit })
-        var MenuInfo = sessionStorage.getItem('MenuInfo');
-        this.state.MenuInfo = JSON.parse(MenuInfo);
-        var FoodID = sessionStorage.getItem('FoodID');
-        console.log("FoodID:", FoodID)
-        this.state.ChoiceTypeList = this.state.MenuInfo["Food"][FoodID]["ChoiceTypeList"]
-        console.log(this.state.ChoiceTypeList)
-        this.type = "checkbox"
-        // this.ShowChoice()
-        if (Edit == null) {
-            this.GetChoiceTypeName()
-        } else if (Edit == "true") {
-            this.GetChoiceTypeName_Edit()
-        }
+        this.setState({ Edit: Edit, columns: columns }, function () {
+            var MenuInfo = sessionStorage.getItem('MenuInfo');
+            this.state.MenuInfo = JSON.parse(MenuInfo);
+            var FoodID = sessionStorage.getItem('FoodID');
+            console.log("FoodID:", FoodID)
+            this.state.ChoiceTypeList = this.state.MenuInfo["Food"][FoodID]["ChoiceTypeList"]
+            console.log(this.state.ChoiceTypeList)
+            this.type = "checkbox"
+            // this.ShowChoice()
+            if (Edit == null) {
+                this.GetChoiceTypeName()
+            } else if (Edit == "true") {
+                this.GetChoiceTypeName_Edit()
+            }
+        })
 
     }
     handleChange(event) {
@@ -258,23 +326,17 @@ class EditRadio extends Component {
         } else if (Edit == "true") {
             var ChoiceTypeList = sessionStorage.getItem('ChoiceTypeList')
         }
-        // ChoiceTypeList = ChoiceTypeList.split(',')
-        // var ChoiceTypeList = this.state.ChoiceTypeList
         console.log("第一步：", ChoiceTypeList)
-        // console.log(event.target.checked)
-        // console.log(event.target.id)
-        console.log(typeof (ChoiceTypeList))
-        // console.log(event.target.checked)
         //如果方塊被選擇
         if (event.target.checked == true & Edit == null) {
             eval(ChoiceTypeList).push(event.target.id)
-            console.log("安安")
             // this.state.ChoiceTypeList.concat(event.target.id)
         } else if (event.target.checked == true & Edit == "true") {
-            ChoiceTypeList = ChoiceTypeList.split(',')
-            // ChoiceTypeList = JSON.parse(ChoiceTypeList)
+            if (typeof (ChoiceTypeList) == "string") {
+                // ChoiceTypeList = eval(ChoiceTypeList)
+                ChoiceTypeList = ChoiceTypeList.split(',')
+            }
             ChoiceTypeList.push(event.target.id)
-            console.log("安安")
         }
         if (event.target.checked == false & Edit == null) //如果方塊被取消掉
         {
@@ -286,6 +348,7 @@ class EditRadio extends Component {
         {
             // 把被取消的元素從陣列移除
             ChoiceTypeList = ChoiceTypeList.split(',')
+            // ChoiceTypeList = eval(ChoiceTypeList)
             // ChoiceTypeList = JSON.parse(ChoiceTypeList)
             ChoiceTypeList = ChoiceTypeList.filter(function (item) {
                 return item != event.target.id
@@ -308,21 +371,26 @@ class EditRadio extends Component {
         // ChoiceTypeName_List = []
         // ChoiceTypeID_List = []
         for (var ChoiceType_key in ChoiceType) {
+            var rows = []
             if (ChoiceType[ChoiceType_key]["Check"] == "1") {
                 // ChoiceTypeName_List.push(ChoiceType[key]["ChoiceTypeName"])
                 console.log(ChoiceType[ChoiceType_key]["ChoiceTypeName"])
                 var ChoiceList = eval(ChoiceType[ChoiceType_key]["ChoiceList"])
                 var CardsBaby = [];
                 for (var Choice_Key in ChoiceList) {
+
                     console.log("ChoiceList[Choice_Key]:", ChoiceList[Choice_Key])
                     var k = ChoiceList[Choice_Key]
                     console.log("Choice[k]", Choice[k])
                     CardsBaby.push(<div>{Choice[k]["ChoiceName"]}</div>);
-                    // CardsBaby.push(<div>大寶寶</div>);
-                    // CardsBaby.push(ChoiceType["Choice"][i])
+                    rows.push({
+                        id: parseInt(Choice_Key) + 1,
+                        ChoiceName: Choice[k]["ChoiceName"],
+                        Price: Choice[k]["Price"]
+                    })
                 }
                 if (this.state.ChoiceTypeList.includes(ChoiceType_key)) {
-                    CardsList.push(<Accordion>
+                    CardsList.push(<Accordion TransitionProps={{ unmountOnExit: true }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-label="Expand"
@@ -342,35 +410,38 @@ class EditRadio extends Component {
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
                             <Typography color="textSecondary">
-                            <Button
-                                onClick={this.handleShow_Edit}
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon />}
-                            >
-                                編輯
+                                <Button
+                                    onClick={this.handleShow_Edit}
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon />}
+                                >
+                                    編輯
                                 </Button>
                             </Typography>
                             <Typography color="textSecondary">
-                            <Button
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="secondary"
-                                onClick={this.handleShow}
-                                startIcon={<DeleteIcon />}
-                            >
-                                刪除
+                                <Button
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={this.handleShow}
+                                    startIcon={<DeleteIcon />}
+                                >
+                                    刪除
                                 </Button>
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
-                                <div>{CardsBaby}</div>
+                                {/* <div>{CardsBaby}</div> */}
                                 {/* 小寶寶 */}
                             </Typography>
+                            <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} />
+                            </div>
                         </AccordionDetails>
                     </Accordion>)
                 }
@@ -394,35 +465,38 @@ class EditRadio extends Component {
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
                             <Typography color="textSecondary">
-                            <Button
-                                onClick={this.handleShow_Edit}
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon />}
-                            >
-                                編輯
+                                <Button
+                                    onClick={this.handleShow_Edit}
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon />}
+                                >
+                                    編輯
                                 </Button>
                             </Typography>
                             <Typography color="textSecondary">
-                            <Button
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="secondary"
-                                onClick={this.handleShow}
-                                startIcon={<DeleteIcon />}
-                            >
-                                刪除
+                                <Button
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={this.handleShow}
+                                    startIcon={<DeleteIcon />}
+                                >
+                                    刪除
                                 </Button>
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
-                                <div>{CardsBaby}</div>
+                                {/* <div>{CardsBaby}</div> */}
                                 {/* 小寶寶 */}
                             </Typography>
+                            <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} />
+                            </div>
                         </AccordionDetails>
                     </Accordion>)
                 }
@@ -457,7 +531,9 @@ class EditRadio extends Component {
         })
         // event.preventDefault();
         sessionStorage.setItem("ChoiceTypeListPost", this.state.ChoiceTypeList)
-        // sessionStorage.setItem("ChoiceTypeList", ChoiceTypeList)
+        toast.success("確認成功")
+        const history = creatHistory();
+        history.goBack();
     }
     GetChoiceTypeName_Edit() {
         var CardsList = [];
@@ -471,6 +547,7 @@ class EditRadio extends Component {
         // ChoiceTypeName_List = []
         // ChoiceTypeID_List = []
         for (var ChoiceType_key in ChoiceType) {
+            var rows = []
             if (ChoiceType[ChoiceType_key]["Check"] == "1") {
                 console.log("ChoiceType_key:", ChoiceType_key)
                 // if (ChoiceType[ChoiceType_key]["Check"] == "0") {
@@ -483,11 +560,14 @@ class EditRadio extends Component {
                     var k = ChoiceList[Choice_Key]
                     console.log("Choice[k]", Choice[k])
                     CardsBaby.push(<div>{Choice[k]["ChoiceName"]}</div>);
-                    // CardsBaby.push(<div>大寶寶</div>);
-                    // CardsBaby.push(ChoiceType["Choice"][i])
+                    rows.push({
+                        id: parseInt(Choice_Key) + 1,
+                        ChoiceName: Choice[k]["ChoiceName"],
+                        Price: Choice[k]["Price"]
+                    })
                 }
                 if (ChoiceTypeList.includes(ChoiceType_key)) {
-                    CardsList.push(<Accordion>
+                    CardsList.push(<Accordion TransitionProps={{ unmountOnExit: true }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-label="Expand"
@@ -506,37 +586,44 @@ class EditRadio extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
-                            <Button
-                                onClick={this.handleShow_Edit}
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon />}
-                            >
-                                編輯
+                            <Typography color="textSecondary">
+                                <Button
+                                    onClick={this.handleShow_Edit}
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon />}
+                                >
+                                    編輯
                                 </Button>
-                            <Button
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="secondary"
-                                onClick={this.handleShow}
-                                startIcon={<DeleteIcon />}
-                            >
-                                刪除
+                            </Typography>
+                            <Typography color="textSecondary">
+                                <Button
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={this.handleShow}
+                                    startIcon={<DeleteIcon />}
+                                >
+                                    刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
-                                <div>{CardsBaby}</div>
+                                {/* <div>{CardsBaby}</div> */}
                                 {/* 小寶寶 */}
                             </Typography>
+                            <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} />
+                            </div>
                         </AccordionDetails>
                     </Accordion>)
                 }
                 else {
-                    CardsList.push(<Accordion>
+                    CardsList.push(<Accordion TransitionProps={{ unmountOnExit: true }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-label="Expand"
@@ -554,32 +641,40 @@ class EditRadio extends Component {
                                     />}
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
-                            <Button
-                                onClick={this.handleShow_Edit}
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon />}
-                            >
-                                編輯
+                            <Typography color="textSecondary">
+                                <Button
+                                    onClick={this.handleShow_Edit}
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon />}
+                                >
+                                    編輯
                                 </Button>
-                            <Button
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="secondary"
-                                onClick={this.handleShow}
-                                startIcon={<DeleteIcon />}
-                            >
-                                刪除
+                            </Typography>
+                            <div style={{ marginLeft: '6px' }}></div>
+                            <Typography color="textSecondary">
+                                <Button
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={this.handleShow}
+                                    startIcon={<DeleteIcon />}
+                                >
+                                    刪除
                                 </Button>
+                            </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
-                                <div>{CardsBaby}</div>
+                                {/* <div>{CardsBaby}</div> */}
                                 {/* 小寶寶 */}
                             </Typography>
+                            <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} />
+                            </div>
                         </AccordionDetails>
                     </Accordion>)
                 }
@@ -604,10 +699,11 @@ class EditRadio extends Component {
                     <noscript>
                         <div className="back">『您的瀏覽器不支援JavaScript功能，若網頁功能無法正常使用時，請開啟瀏覽器JavaScript狀態』</div>
                     </noscript>
-                    <button className="menu_btn">
-                        <img style={{ height: '50%', width: '50%' }} src={menu} alt="menu" />
-                    </button>
-
+                    <Link to="/">
+                        <button className="menu_btn">
+                            <img style={{ height: '48px',width:'48px'}} src={menu} alt="menu" />
+                        </button>
+                    </Link>
                     <div style={{ backgroundColor: '#333333', height: '80%' }}>
                         <div className="headerName" id="headerName">
                             複選項目
@@ -627,29 +723,38 @@ class EditRadio extends Component {
                         <div className="card-body ">
                             <form onSubmit={this.handleSubmit}>
                                 <div className="input-group input-group-sm">
-                                    <div className="searchbar" id="searchbar" />
+                                    {/* <div className="searchbar" id="searchbar" />
                                     <div class="d-flex justify-content-center h-100">
                                         <div class="Searchbar">
                                             <input class="search_input" type="text" name="" placeholder="Search..."></input>
                                             <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     {/* <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                         </input> */}
                                     <div className="input-group-append" >
                                         <IconButton aria-label="AddCircle" size="large">
                                             <Link to="/AddRadio_Add">
+                                                編輯選項
                                                 <AddCircle fontSize="large" />
                                             </Link>
-                                            </IconButton>
+                                        </IconButton>
                                     </div>
                                 </div>
                                 <div className="form-group">
                                     <div style={{ marginTop: '16px' }}></div>
                                     {this.state.CardsList}
+                                    {this.state.AddCard}
+                                    <Card>
+                                        <ListItem>
+                                            <IconButton color="primary" aria-label="add to shopping cart" onClick={this.AddTypeBTN}>
+                                                <LibraryAddIcon />新增項目
+                                        </IconButton>
+                                        </ListItem>
+                                    </Card>
                                 </div>
-                                < button onClick={this.reload} className="btn btn-block btn-secondary btn-lg">取消</button>
-                                < input type="submit" className="btn btn-block btn-success btn-lg" value="確認" ></input>
+                                < button onClick={this.handleShow_cancel} className="btn btn-block btn-secondary btn-lg">取消</button>
+                                < input type="submit" className="btn btn-block btn-success btn-lg" value="確認並返回" ></input>
                             </form>
                         </div>
 
@@ -681,15 +786,15 @@ class EditRadio extends Component {
                         {/* 你確定要刪除<font style={{ color: 'red' }}></font>類別嗎？ */}
                     </Modal.Body>
                     <Modal.Footer>
-                        <REButton variant="secondary" onClick={this.handleClose}>
+                        <REButton variant="secondary" onClick={this.handleClose_Edit}>
                             關閉
                         </REButton>
-                        <REButton variant="success" onClick={this.EditType} id={this.state.ChoiceTypeID}>
+                        <REButton variant="success" onClick={this.EditRadio} id={this.state.ChoiceTypeID}>
                             編輯
                         </REButton>
                     </Modal.Footer>
                 </Modal>
-                <Modal show={this.state.show} onHide={this.handleClose_Edit}>
+                <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>通知</Modal.Title>
                     </Modal.Header>
@@ -698,8 +803,22 @@ class EditRadio extends Component {
                         <REButton variant="secondary" onClick={this.handleClose}>
                             關閉
                         </REButton>
-                        <REButton variant="danger" onClick={this.DeleteType} id={this.state.ChoiceTypeID}>
+                        <REButton variant="danger" onClick={this.DeleteRadio} id={this.state.ChoiceTypeID}>
                             刪除
+                        </REButton>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.cancelshow} onHide={this.handleClose_cancel}>
+                    <Modal.Header closeButton>
+                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>通知</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body >取消將會將單選、複選選項回復原本狀態，確定要取消嗎？</Modal.Body>
+                    <Modal.Footer>
+                        <REButton variant="secondary" onClick={this.handleClose_cancel}>
+                            關閉
+                        </REButton>
+                        <REButton variant="danger" onClick={this.reload} id={this.state.ChoiceTypeID}>
+                            回復
                         </REButton>
                     </Modal.Footer>
                 </Modal>

@@ -1,0 +1,48 @@
+#Title {
+    margin-top: 10px;
+}
+
+.width_60 {
+    margin-top: 20px;
+    width: 60%;
+}
+
+#outlined-helperText {
+    margin-right: 1px;
+    width: 70%;
+}
+
+.image_input {
+    margin-right: 1px;
+    width: 70%;
+}
+
+#Hr_style {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.Row_Title {
+    margin-top: 4vh;
+}
+
+#image_show {
+    margin-top: 5px;
+}
+
+#image_btn {
+    height: 40px;
+    width: 29%;
+}
+
+#img_display {
+    display: flex;
+}
+
+#TableNum {
+    margin-top: 2vh;
+}
+
+#FormControl_input {
+    height: 39.8px;
+}

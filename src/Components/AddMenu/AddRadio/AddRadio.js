@@ -1,11 +1,11 @@
 //菜單更新
 import React, { Component } from 'react';
-import { Card, Modal} from 'react-bootstrap';
+import { Card, Modal } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import REButton from 'react-bootstrap/Button';
 import $ from 'jquery';
 import back from '../../../images/back.svg';
-import menu from '../../../images/menu.jpg';
+import menu from '../../../images/menu.png';
 import creatHistory from 'history/createHashHistory';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -25,12 +25,23 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircle from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { DataGrid } from '@material-ui/data-grid';
 import { toast } from 'react-toastify'
+
 const Config = require("../../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
 import '../../Content.css'
-class AddRadio extends Component {
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+class AddChoice extends Component {
     constructor(props) {
         super(props);
         this.type = ""
@@ -51,7 +62,7 @@ class AddRadio extends Component {
             imagePreviewUrl: '',
             value: '',
             Price: Price,
-            StoreID: "S_725d0fd9-4875-4762-8bc8-43404d2d5775",
+            StoreID: "",
             FoodID: FoodID,
             FoodName: FoodName,
             ChoiceID: ChoiceID,
@@ -64,9 +75,10 @@ class AddRadio extends Component {
             AddCard: null,
             ChoiceTypeName: '',
             EditChoiceTypeName: '',
-            NewChoiceTypeName:'',
-            DelChoiceTypeName:'',
-            ChoiceTypeID:'',
+            NewChoiceTypeName: '',
+            DelChoiceTypeName: '',
+            ChoiceTypeID: '',
+            columns: [],
             show: false,
             show_Edit: false
         };
@@ -79,13 +91,14 @@ class AddRadio extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleShow_Edit = this.handleShow_Edit.bind(this);
         this.handleClose_Edit = this.handleClose_Edit.bind(this);
-        this.EditType = this.EditType.bind(this);
+        this.EditRadio = this.EditRadio.bind(this);
         this.handleEditChange = this.handleEditChange.bind(this);
-        this.DeleteType = this.DeleteType.bind(this)
+        this.DeleteRadio = this.DeleteRadio.bind(this)
     }
     handleClose() { this.setState({ show: false }) }
     handleClose_Edit() { this.setState({ show_Edit: false }) }
     handleShow(event) {
+        event.stopPropagation()
         console.log(event.currentTarget.value)
         var ChoiceTypeID = event.currentTarget.value;
         var DelChoiceTypeName = event.currentTarget.id;
@@ -93,13 +106,14 @@ class AddRadio extends Component {
         this.setState({ show: true, ChoiceTypeID: ChoiceTypeID, DelChoiceTypeName: DelChoiceTypeName })
     }
     handleShow_Edit(event) {
+        event.stopPropagation() // 防止點下編輯連手風琴都打開
         console.log(event.currentTarget.value)
         var ChoiceTypeID = event.currentTarget.value;
         var EditChoiceTypeName = event.currentTarget.id;
         // this.setState({ })
         this.setState({ show_Edit: true, ChoiceTypeID: ChoiceTypeID, EditChoiceTypeName: EditChoiceTypeName })
     }
-    EditType(event) {
+    EditRadio(event) {
         var StoreID = this.state.StoreID;
         var ChoiceTypeID = this.state.ChoiceTypeID;
         var NewChoiceTypeName = this.state.NewChoiceTypeName;
@@ -115,7 +129,7 @@ class AddRadio extends Component {
                 "StoreID": StoreID,
                 "ChoiceTypeID": ChoiceTypeID,
                 "ChoiceTypeName": NewChoiceTypeName,
-                "Check":Check
+                "Check": Check
             }),
         };
         $.ajax(settings).done(function (response) {
@@ -123,7 +137,7 @@ class AddRadio extends Component {
             toast.success("成功編輯類別");
         }.bind(this))
     }
-    DeleteType(event) {
+    DeleteRadio(event) {
         var StoreID = this.state.StoreID;
         var ChoiceTypeID = this.state.ChoiceTypeID;
         var settings = {
@@ -153,6 +167,17 @@ class AddRadio extends Component {
         // history.go(-1)
     }
     componentDidMount() {
+        toast.configure()
+        const columns = [
+            { field: 'id', headerName: 'ID', width: 60 },
+            { field: 'ChoiceName', headerName: '細項名稱', width: 150 },
+            { field: 'Price', headerName: '細項價格', width: 100 }
+        ];
+        this.setState({ columns: columns })
+        var StoreID = getParameterByName("s");
+        this.setState({
+            StoreID: StoreID
+        })
         toast.configure()
         document.title = '複選項目';
         // 取得一大包資訊
@@ -204,10 +229,11 @@ class AddRadio extends Component {
         this.setState({ ChoiceTypeName: event.target.value })
     }
     ShowSetMenu() {
+        var StoreID = getParameterByName("s");
         console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        var raw = JSON.stringify({ "StoreID": "S_725d0fd9-4875-4762-8bc8-43404d2d5775" });
+        var raw = JSON.stringify({ "StoreID": StoreID });
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -231,23 +257,26 @@ class AddRadio extends Component {
         var CardsList = [];
         var ChoiceType = this.state.MenuInfo["ChoiceType"]
         var Choice = this.state.MenuInfo["Choice"]
-        console.log("Choice:", Choice)
-        // ChoiceType.map((e,i)=>{console.log()})
-        // ChoiceTypeName_List = []
-        // ChoiceTypeID_List = []
         for (var ChoiceType_key in ChoiceType) {
+            var rows = []
             if (ChoiceType[ChoiceType_key]["Check"] == "1") {
                 // ChoiceTypeName_List.push(ChoiceType[key]["ChoiceTypeName"])
-                console.log(ChoiceType[ChoiceType_key]["ChoiceTypeName"])
+                // console.log(ChoiceType[ChoiceType_key]["ChoiceTypeName"])
                 var ChoiceList = eval(ChoiceType[ChoiceType_key]["ChoiceList"])
-                var CardsBaby = [];
+                // var CardsBaby = [];
                 for (var Choice_Key in ChoiceList) {
+                    console.log(Choice_Key)
                     var k = ChoiceList[Choice_Key]
-                    CardsBaby.push(<div>{Choice[k]["ChoiceName"]}  價錢：{Choice[k]["Price"]}</div>);
+                    // CardsBaby.push(<div>{Choice[k]["ChoiceName"]}  價錢：{Choice[k]["Price"]}</div>);
+                    rows.push({
+                        id: parseInt(Choice_Key) + 1,
+                        ChoiceName: Choice[k]["ChoiceName"],
+                        Price: Choice[k]["Price"]
+                    })
                 }
                 console.log("this.state.ChoiceTypeList:", this.state.ChoiceTypeList)
                 if (this.state.ChoiceTypeList.includes(ChoiceType_key)) {
-                    CardsList.push(<Accordion>
+                    CardsList.push(<Accordion TransitionProps={{ unmountOnExit: true }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-label="Expand"
@@ -266,39 +295,43 @@ class AddRadio extends Component {
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
                             <Typography color="textSecondary">
-                            <Button
-                                onClick={this.handleShow_Edit}
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon />}
-                            >
-                                編輯
+                                <Button
+                                    onFocus={(event) => event.stopPropagation()}
+                                    onClick={this.handleShow_Edit}
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon />}
+                                >
+                                    編輯
                                 </Button>
                             </Typography>
                             <Typography color="textSecondary">
-                            <Button
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="secondary"
-                                onClick={this.handleShow}
-                                startIcon={<DeleteIcon />}
-                            >
-                                刪除
+                                <Button
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={this.handleShow}
+                                    startIcon={<DeleteIcon />}
+                                >
+                                    刪除
                                 </Button>
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
-                                <div>{CardsBaby}</div>
+                                {/* <div>{CardsBaby}</div> */}
                                 {/* 小寶寶 */}
                             </Typography>
+                            <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5}/>
+                            </div>
                         </AccordionDetails>
                     </Accordion>)
                 } else {
-                    CardsList.push(<Accordion>
+                    CardsList.push(<Accordion TransitionProps={{ unmountOnExit: true }}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-label="Expand"
@@ -316,35 +349,41 @@ class AddRadio extends Component {
                                 label={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                             />
                             <Typography color="textSecondary">
-                            <Button
-                                onClick={this.handleShow_Edit}
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="primary"
-                                startIcon={<EditIcon />}
-                            >
-                                編輯
+
+                                <Button
+                                    onFocus={(event) => event.stopPropagation()}
+                                    onClick={this.handleShow_Edit}
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<EditIcon />}
+                                >
+                                    編輯
                                 </Button>
                             </Typography>
+                            <div style={{ marginLeft: '6px' }}></div>
                             <Typography color="textSecondary">
-                            <Button
-                                id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
-                                value={ChoiceType_key}
-                                variant="contained"
-                                color="secondary"
-                                onClick={this.handleShow}
-                                startIcon={<DeleteIcon />}
-                            >
-                                刪除
+                                <Button
+                                    id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
+                                    value={ChoiceType_key}
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={this.handleShow}
+                                    startIcon={<DeleteIcon />}
+                                >
+                                    刪除
                                 </Button>
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography color="textSecondary">
-                                <div>{CardsBaby}</div>
+                                {/* <div>{CardsBaby}</div> */}
                                 {/* 小寶寶 */}
                             </Typography>
+                            <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} />
+                            </div>
                         </AccordionDetails>
                     </Accordion>)
                 }
@@ -376,7 +415,7 @@ class AddRadio extends Component {
         </Card>)
         this.setState({ AddCard: AddCard })
     }
-    // Post新增類別的API
+    // Post新增項目的API
     AddTypeAPI() {
         let StoreID = this.state.StoreID;
         let ChoiceTypeName = this.state.ChoiceTypeName;
@@ -396,7 +435,7 @@ class AddRadio extends Component {
         };
         $.ajax(settings).done(function (response) {
             this.ShowSetMenu();
-            toast.success("成功新增類別");
+            toast.success("成功新增項目");
         }.bind(this))
     }
     render() {
@@ -409,10 +448,11 @@ class AddRadio extends Component {
                     <noscript>
                         <div className="back">『您的瀏覽器不支援JavaScript功能，若網頁功能無法正常使用時，請開啟瀏覽器JavaScript狀態』</div>
                     </noscript>
-                    <button className="menu_btn">
-                        <img style={{ height: '50%', width: '50%' }} src={menu} alt="menu" />
-                    </button>
-
+                    <Link to="/">
+					<button className="menu_btn">
+						<img style={{ height: '48px',width:'48px'}} src={menu} alt="menu" />
+					</button>
+					</Link>
                     <div style={{ backgroundColor: '#333333', height: '80%' }}>
                         <div className="headerName" id="headerName">
                             複選項目
@@ -432,19 +472,20 @@ class AddRadio extends Component {
                         <div className="card-body ">
                             <form onSubmit={this.handleSubmit}>
                                 <div className="input-group input-group-sm">
-                                    <div className="searchbar" id="searchbar" />
+                                    {/* <div className="searchbar" id="searchbar" />
                                     <div class="d-flex justify-content-center h-100">
                                         <div class="Searchbar">
                                             <input class="search_input" type="text" name="" placeholder="Search..."></input>
                                             <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     {/* <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                         </input> */}
                                     <div className="input-group-append" >
                                         {/* <button onClick={this.handleOnClick} class="btn btn-app" style={{ position: "absolute" }}> */}
                                         <IconButton aria-label="AddCircle" size="large">
                                             <Link to="/AddRadio_Add">
+                                                編輯選項
                                                 <AddCircle fontSize="large" />
                                             </Link>
                                         </IconButton>
@@ -459,7 +500,7 @@ class AddRadio extends Component {
                                         <Card>
                                             <ListItem>
                                                 <IconButton color="primary" aria-label="add to shopping cart" onClick={this.AddTypeBTN}>
-                                                    <LibraryAddIcon />新增類別
+                                                    <LibraryAddIcon />新增項目
                                         </IconButton>
                                             </ListItem>
                                         </Card>
@@ -494,18 +535,16 @@ class AddRadio extends Component {
                             variant="outlined"
                             onChange={this.handleEditChange}
                         />
-                        {/* 你確定要刪除<font style={{ color: 'red' }}></font>類別嗎？ */}
                     </Modal.Body>
                     <Modal.Footer>
                         <REButton variant="secondary" onClick={this.handleClose_Edit}>
                             關閉
                         </REButton>
-                        <REButton variant="success" onClick={this.EditType} id={this.state.ChoiceTypeID}>
+                        <REButton variant="success" onClick={this.EditRadio} id={this.state.ChoiceTypeID}>
                             編輯
                         </REButton>
                     </Modal.Footer>
                 </Modal>
-
 
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
@@ -516,7 +555,7 @@ class AddRadio extends Component {
                         <REButton variant="secondary" onClick={this.handleClose}>
                             關閉
                         </REButton>
-                        <REButton variant="danger" onClick={this.DeleteType} id={this.state.ChoiceTypeID}>
+                        <REButton variant="danger" onClick={this.DeleteRadio} id={this.state.ChoiceTypeID}>
                             刪除
                         </REButton>
                     </Modal.Footer>
@@ -527,7 +566,7 @@ class AddRadio extends Component {
     }
 }
 
-export default AddRadio;
+export default AddChoice;
 // function changeAddMenu() {
 //   // ShowMenu()
 //   $("#headerName").text("菜單新增");

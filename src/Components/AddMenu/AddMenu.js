@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import back from '../../images/back.svg';
-import menu from '../../images/menu.jpg';
+import menu from '../../images/menu.png';
 import ad from '../../images/remove-ads.png';
 import '../Content.css'
 import { toast } from 'react-toastify'
@@ -12,6 +12,15 @@ import style from 'react-toastify/dist/ReactToastify.css'
 const Config = require("../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 class AddMenu extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +28,7 @@ class AddMenu extends Component {
             file: '',
             imagePreviewUrl: '',
             value: '',
-            StoreID: "S_725d0fd9-4875-4762-8bc8-43404d2d5775",
+            StoreID: "",
             FoodName: '',
             Price: '',
             FoodID:''
@@ -42,26 +51,78 @@ class AddMenu extends Component {
         console.log("FoodName:", FoodName)
         $('#inputName').val(FoodName);
         $('#inputProjectLeader').val(Price);
+        var MenuInfo = sessionStorage.getItem('MenuInfo');
+        if (sessionStorage.getItem("FoodID") != null) {
+            var FoodID = sessionStorage.getItem("FoodID")
+        } else {
+            var FoodID = this.state.FoodID
+        }
+        if (sessionStorage.getItem('ImgSrc') == null) {
+            var ImgSrc = `${Config.Post_IP.ImgURL}${this.state.StoreID}/${FoodID}`
+            sessionStorage.setItem("ImgSrc", ImgSrc)
+        }
+        var StoreID = getParameterByName("s");
+        this.setState({
+            StoreID: StoreID
+        })
     }
-    handleChange_Name(event) {
-        this.setState({ FoodName: event.target.value });
-    }
-    handleChange_Price(event) {
-        this.setState({ Price: event.target.value });
-    }
+    // handleChange_Name(event) {
+    //     this.setState({ FoodName: event.target.value });
+    // }
+    // handleChange_Price(event) {
+    //     this.setState({ Price: event.target.value });
+    // }
     handleSubmit(event) {
-        console.log('handle uploading-', this.state.file);
+        // console.log('handle uploading-', this.state.file);
+        // alert('A name was submitted: ' + FoodName + "     Price:" + Price);
         var FoodTypeID = sessionStorage.getItem('FoodTypeName_List');
         var FoodName = sessionStorage.getItem('FoodName');
         var Price = sessionStorage.getItem('Price');
-        // alert('A name was submitted: ' + FoodName + "     Price:" + Price);
         var ChoiceTypeList = sessionStorage.getItem('ChoiceTypeList');
-        FoodTypeID = FoodTypeID.split(',')
-        ChoiceTypeList = ChoiceTypeList.split(',')
+        if (FoodTypeID!=undefined){
+            FoodTypeID = FoodTypeID.split(',')
+        }
+        if (ChoiceTypeList!=undefined){
+            ChoiceTypeList = ChoiceTypeList.split(',')
+        }
+        if (ChoiceTypeList == null){
+            var ChoiceTypeList = []
+        }
         // ChoiceTypeList = ChoiceTypeList.replace(/\\/,'')
         console.log("ChoiceTypeList:", ChoiceTypeList)
         event.preventDefault();
-        this.AddFood(FoodTypeID, FoodName, Price, ChoiceTypeList);
+        if (FoodName == undefined){
+            toast.error('餐點名稱未填', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+        } else if (Price == undefined){
+            toast.error('餐點價格未填', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+        }
+        else if (FoodTypeID==undefined){
+            toast.error('分類項目未填', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+        }else{
+            this.AddFood(FoodTypeID, FoodName, Price, ChoiceTypeList);
+        }
+        
         
     }
     handleImageChange(e) {
@@ -69,6 +130,7 @@ class AddMenu extends Component {
         let reader = new FileReader();
         let file = e.target.files[0];
         reader.onloadend = () => {
+            sessionStorage.setItem("ImgSrc", reader.result)
             this.setState({
                 file: file,
                 imagePreviewUrl: reader.result
@@ -85,6 +147,7 @@ class AddMenu extends Component {
         let ImgExtension = "jpg"
         let SoldOut = "0"
         let OffShelf = "0"
+        
         var settings = {
             "url": API_Url + ':' + API_Port + "/AddFood",
             "method": "POST",
@@ -112,6 +175,7 @@ class AddMenu extends Component {
             this.ImageUpload();
             const history = creatHistory();
             history.goBack();
+            // window.location.reload();
             // sessionStorage.clear()
         }.bind(this))
     }
@@ -120,6 +184,8 @@ class AddMenu extends Component {
         sessionStorage.setItem('FoodName', event.target.value);
     }
     handleChange_Price(event) {
+        var price = event.target.value.replace(/[^0-9]/g, '')
+        $("#inputProjectLeader").val($("#inputProjectLeader").val().replace(/[^0-9]/g, ''))
         // this.setState({ Price: event.target.value });
         sessionStorage.setItem('Price', event.target.value);
     }
@@ -138,19 +204,31 @@ class AddMenu extends Component {
             body: formdata,
             redirect: 'follow'
         };
-        fetch("http://163.18.26.237:8011/ImageUpload", requestOptions)
+        fetch("https://cloudpos.54ucl.com:8011/ImageUpload", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
     }
     render() {
-        let { imagePreviewUrl } = this.state;
-        let $imagePreview = null;
+        // let imagePreviewUrl = sessionStorage.getItem("ImgSrc")
+        // console.log('硬硬',imagePreviewUrl)
+        // let $imagePreview = null;
+        // if (imagePreviewUrl =='https://CloudPos.54ucl.com:8011/Image//') {
+        //     $imagePreview = (<div className="previewText">請選擇圖片即可預覽圖片</div>);
+        // } else {
+        //     $imagePreview = (<img src={imagePreviewUrl} />);
+        // }
+        //-----
+        let {
+            imagePreviewUrl
+        } = this.state;
+        let $imagePreview = (<div className="previewText">請選擇圖片即可預覽圖片</div>);
         if (imagePreviewUrl) {
-            $imagePreview = (<img src={imagePreviewUrl} />);
-        } else {
-            $imagePreview = (<div className="previewText">請選擇圖片即可預覽圖片</div>);
-        }
+            $imagePreview = ( < img src = {
+                    imagePreviewUrl
+                }
+                />);
+            }
         return (
             <div className="contact-section">
                 <header className="header" style={{ height: '100%' }}>
@@ -160,10 +238,10 @@ class AddMenu extends Component {
                     <noscript>
                         <div className="back">『您的瀏覽器不支援JavaScript功能，若網頁功能無法正常使用時，請開啟瀏覽器JavaScript狀態』</div>
                     </noscript>
-                    <button className="menu_btn">
-                        <img style={{ height: '50%', width: '50%' }} src={menu} alt="menu" />
+                    < Link to = "/" > < button className = "menu_btn" >
+                        <img style={{ height: '48px',width:'48px'}} src={menu} alt="menu" />
                     </button>
-
+                    </ Link>
                     <div style={{ backgroundColor: '#333333', height: '80%' }}>
                         <div className="headerName" id="headerName">
                             菜單新增
@@ -187,7 +265,6 @@ class AddMenu extends Component {
                                     <div Style="width:50%;margin:0 1em 1em 0;" className="img-thumbnail rounded float-left imgPreview">
                                         {$imagePreview}
                                     </div>
-                                    <input onChange={(e) => this.handleImageChange(e)} type="file" accept="image/*" Style="float:right;width:45%;height:45%;" class="btn btn-primary" Style="font-size:18px;min-width:-webkit-fill-available"></input>
                                     {/* <input type="file" onChange={this.handleUpload} /> */}
                                 </div>
                                 <div className="form-group">
@@ -203,12 +280,14 @@ class AddMenu extends Component {
                                 <div className="form-group">
                                     {/* <label for="inputClientCompany">Client Company</label>
                                 <input type="text" id="inputClientCompany" className="form-control" value="Deveint Inc"></input> */}
-                                    <Link to="/AddType"><button type="button" class="btn btn-default btn-block btn-flat">分類項目</button></Link>
+                                    <Link to="/AddType"><button type="button" class="btn btn-default btn-block btn-flat">*分類項目</button></Link>
                                 </div>
                                 <div className="form-group">
                                     <label for="inputProjectLeader">價格</label>
                                     <input onChange={this.handleChange_Price} type="text" id="inputProjectLeader" className="form-control" placeholder="餐點價錢"></input>
                                 </div>
+                                <input onChange={(e) => this.handleImageChange(e)} type="file" accept="image/*" Style="float:right;width:45%;height:45%;" class="btn btn-primary" Style="font-size:18px;min-width:-webkit-fill-available"></input>
+                                <div style={{height:'12px'}}></div>
                                 < input type="submit" className="btn btn-block btn-success btn-lg" value="確認上傳" ></input>
                             </form>
                         </div>

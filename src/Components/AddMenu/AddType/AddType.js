@@ -5,9 +5,8 @@ import REButton from 'react-bootstrap/Button';
 import { Link, Redirect } from 'react-router-dom';
 import $ from 'jquery';
 import back from '../../../images/back.svg';
-import menu from '../../../images/menu.jpg';
+import menu from '../../../images/menu.png';
 import creatHistory from 'history/createHashHistory';
-import Accordion from '@material-ui/core/Accordion';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
@@ -15,25 +14,31 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { toast } from 'react-toastify'
 import style from 'react-toastify/dist/ReactToastify.css'
+import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import style2 from 'bootstrap/dist/css/bootstrap.min.css';
+// import style2 from 'bootstrap/dist/css/bootstrap.min.css';
 import '../../Content.css'
-import { Input } from '@material-ui/core';
 const Config = require("../../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
 // function Example() {
 //     const [show, setShow] = useState(false);
 // }
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 class AddType extends Component {
     constructor(props) {
         super(props);
@@ -55,7 +60,7 @@ class AddType extends Component {
             imagePreviewUrl: '',
             value: '',
             Price: Price,
-            StoreID: "S_725d0fd9-4875-4762-8bc8-43404d2d5775",
+            StoreID: "",
             FoodID: FoodID,
             FoodName: FoodName,
             ChoiceID: ChoiceID,
@@ -113,6 +118,10 @@ class AddType extends Component {
     componentDidMount() {
         toast.configure()
         document.title = '分類項目';
+        var StoreID = getParameterByName("s");
+        this.setState({
+            StoreID: StoreID
+        })
         this.type = "checkbox"
         var MenuInfo = sessionStorage.getItem('MenuInfo');
         this.state.MenuInfo = JSON.parse(MenuInfo);
@@ -178,6 +187,7 @@ class AddType extends Component {
                                 />}
                             label={FoodType[FoodType_key]["FoodTypeName"]}
                         />
+                        <Typography color="textSecondary">
                         <Button
                             onClick={this.handleShow_Edit}
                             id={FoodType[FoodType_key]["FoodTypeName"]}
@@ -188,6 +198,9 @@ class AddType extends Component {
                         >
                             編輯
                                 </Button>
+                        </Typography>
+                        <Typography color="textSecondary">
+                        <div style={{ marginLeft: '6px' }}></div>
                         <Button
                             onClick={this.handleShow}
                             id={FoodType[FoodType_key]["FoodTypeName"]}
@@ -198,6 +211,7 @@ class AddType extends Component {
                         >
                             刪除
                                 </Button>
+                        </Typography>
                     </ListItem>
                 </Card>)
             } else {
@@ -217,6 +231,7 @@ class AddType extends Component {
                                     />}
                                 label={FoodType[FoodType_key]["FoodTypeName"]}
                             />
+                            <Typography color="textSecondary">
                             <Button
                                 onClick={this.handleShow_Edit}
                                 id={FoodType[FoodType_key]["FoodTypeName"]}
@@ -227,6 +242,9 @@ class AddType extends Component {
                             >
                                 編輯
                                 </Button>
+                            </Typography>
+                            <div style={{ marginLeft: '6px' }}></div>
+                            <Typography color="textSecondary">
                             <Button
                                 id={FoodType[FoodType_key]["FoodTypeName"]}
                                 value={FoodType_key}
@@ -237,6 +255,7 @@ class AddType extends Component {
                             >
                                 刪除
                                 </Button>
+                            </Typography>
                         </ListItem>
                     </Card>)
             }
@@ -292,10 +311,15 @@ class AddType extends Component {
         }.bind(this))
     }
     ShowSetMenu() {
+        // event.preventDefault();
+        var StoreID = getParameterByName("s");
+        this.setState({
+            StoreID: StoreID
+        })
         console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        var raw = JSON.stringify({ "StoreID": "S_725d0fd9-4875-4762-8bc8-43404d2d5775" });
+        var raw = JSON.stringify({ "StoreID": StoreID });
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -310,7 +334,7 @@ class AddType extends Component {
                 sessionStorage.setItem('MenuInfo', JSON.stringify(MenuInfo));
                 this.setState({ MenuInfo: MenuInfo })
                 window.location.reload()
-                event.preventDefault();
+                
             }.bind(this))
             .catch(error => console.log('error', error));
     }
@@ -369,10 +393,11 @@ class AddType extends Component {
                     <noscript>
                         <div className="back">『您的瀏覽器不支援JavaScript功能，若網頁功能無法正常使用時，請開啟瀏覽器JavaScript狀態』</div>
                     </noscript>
-                    <button className="menu_btn">
-                        <img style={{ height: '50%', width: '50%' }} src={menu} alt="menu" />
-                    </button>
-
+                    <Link to="/">
+					<button className="menu_btn">
+						<img style={{ height: '48px',width:'48px'}} src={menu} alt="menu" />
+					</button>
+					</Link>
                     <div style={{ backgroundColor: '#333333', height: '80%' }}>
                         <div className="headerName" id="headerName">
                             分類項目
@@ -390,7 +415,7 @@ class AddType extends Component {
                             </div>
                         </div> */}
                         <div className="card-body ">
-                            <form onSubmit={this.handleSubmit}>
+                            <form>
                                 {/* <div className="input-group input-group-sm">
                                     <div className="searchbar" id="searchbar" />
                                     <div class="d-flex justify-content-center h-100">
@@ -432,7 +457,7 @@ class AddType extends Component {
                 </div>
                 <Modal show={this.state.show_Edit} onHide={this.handleClose_Edit}>
                     <Modal.Header closeButton>
-                        <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>編輯視窗</Modal.Title>
+                        <Modal.Title><i class="fas fa-edit"></i>編輯視窗</Modal.Title>
                     </Modal.Header>
                     <Modal.Body >
                         <TextField
@@ -456,7 +481,7 @@ class AddType extends Component {
                         {/* 你確定要刪除<font style={{ color: 'red' }}></font>類別嗎？ */}
                     </Modal.Body>
                     <Modal.Footer>
-                        <REButton variant="secondary" onClick={this.handleClose}>
+                        <REButton variant="secondary" onClick={this.handleClose_Edit}>
                             關閉
                         </REButton>
                         <REButton variant="success" onClick={this.EditType} id={this.state.FoodTypeID}>
@@ -464,7 +489,7 @@ class AddType extends Component {
                         </REButton>
                     </Modal.Footer>
                 </Modal>
-                <Modal show={this.state.show} onHide={this.handleClose_Edit}>
+                <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title><i class="fas fa-exclamation-triangle text-danger"></i>通知</Modal.Title>
                     </Modal.Header>

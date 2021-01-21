@@ -2,9 +2,10 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import back from '../../images/back.svg';
-import menu from '../../images/menu.jpg';
+import menu from '../../images/menu.png';
 import creatHistory from 'history/createHashHistory';
 const config = require('../../config');
+import {Link,withRouter} from 'react-router-dom';
 class StoreInfo extends Component {
     backgo() {
         const history = creatHistory();
@@ -25,9 +26,11 @@ class StoreInfo extends Component {
                     <noscript>
                         <div className="back">『您的瀏覽器不支援JavaScript功能，若網頁功能無法正常使用時，請開啟瀏覽器JavaScript狀態』</div>
                     </noscript>
-                    <button className="menu_btn">
-                        <img style={{ height: '50%', width: '50%' }} src={menu} alt="menu" />
-                    </button>
+                    <Link to="/">
+					<button className="menu_btn">
+						<img style={{ height: '48px',width:'48px'}} src={menu} alt="menu" />
+					</button>
+					</Link>
 
                     <div style={{ backgroundColor: '#333333', height: '80%' }}>
                         <div className="headerName" id="headerName">

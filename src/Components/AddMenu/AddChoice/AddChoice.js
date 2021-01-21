@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import REButton from 'react-bootstrap/Button';
 import $ from 'jquery';
 import back from '../../../images/back.svg';
-import menu from '../../../images/menu.jpg';
+import menu from '../../../images/menu.png';
 import creatHistory from 'history/createHashHistory';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -32,6 +32,15 @@ const Config = require("../../../config")
 const API_Url = Config.Post_IP.API_IP;
 const API_Port = Config.Post_IP.API_Port;
 import '../../Content.css'
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 class AddChoice extends Component {
     constructor(props) {
         super(props);
@@ -53,7 +62,7 @@ class AddChoice extends Component {
             imagePreviewUrl: '',
             value: '',
             Price: Price,
-            StoreID: "S_725d0fd9-4875-4762-8bc8-43404d2d5775",
+            StoreID: "",
             FoodID: FoodID,
             FoodName: FoodName,
             ChoiceID: ChoiceID,
@@ -82,9 +91,9 @@ class AddChoice extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleShow_Edit = this.handleShow_Edit.bind(this);
         this.handleClose_Edit = this.handleClose_Edit.bind(this);
-        this.EditType = this.EditType.bind(this);
+        this.EditRadio = this.EditRadio.bind(this);
         this.handleEditChange = this.handleEditChange.bind(this);
-        this.DeleteType = this.DeleteType.bind(this)
+        this.DeleteRadio = this.DeleteRadio.bind(this)
     }
     handleClose() { this.setState({ show: false }) }
     handleClose_Edit() { this.setState({ show_Edit: false }) }
@@ -104,7 +113,7 @@ class AddChoice extends Component {
         // this.setState({ })
         this.setState({ show_Edit: true, ChoiceTypeID: ChoiceTypeID, EditChoiceTypeName: EditChoiceTypeName })
     }
-    EditType(event) {
+    EditRadio(event) {
         var StoreID = this.state.StoreID;
         var ChoiceTypeID = this.state.ChoiceTypeID;
         var NewChoiceTypeName = this.state.NewChoiceTypeName;
@@ -128,7 +137,7 @@ class AddChoice extends Component {
             toast.success("成功編輯類別");
         }.bind(this))
     }
-    DeleteType(event) {
+    DeleteRadio(event) {
         var StoreID = this.state.StoreID;
         var ChoiceTypeID = this.state.ChoiceTypeID;
         var settings = {
@@ -158,24 +167,17 @@ class AddChoice extends Component {
         // history.go(-1)
     }
     componentDidMount() {
+        toast.configure()
         const columns = [
             { field: 'id', headerName: 'ID', width: 60 },
             { field: 'ChoiceName', headerName: '細項名稱', width: 150 },
-            { field: 'Price', headerName: '細項價格', width: 90 },
-            {
-                field: 'EditButton',
-                headerName: 'EditButton',
-                type: 'button',
-                width: 90,
-            },{
-                field: 'DeleteButton',
-                headerName: 'DeleteButton',
-                type: 'button',
-                width: 90,
-            }
+            { field: 'Price', headerName: '細項價格', width: 100 }
         ];
         this.setState({ columns: columns})
-        toast.configure()
+        var StoreID = getParameterByName("s");
+        this.setState({
+            StoreID: StoreID
+        })
         document.title = '單選項目';
         // 取得一大包資訊
         var MenuInfo = sessionStorage.getItem('MenuInfo');
@@ -226,10 +228,11 @@ class AddChoice extends Component {
         this.setState({ ChoiceTypeName: event.target.value })
     }
     ShowSetMenu() {
+        var StoreID = getParameterByName("s");
         console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        var raw = JSON.stringify({ "StoreID": "S_725d0fd9-4875-4762-8bc8-43404d2d5775" });
+        var raw = JSON.stringify({ "StoreID": StoreID });
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -251,14 +254,8 @@ class AddChoice extends Component {
     // 顯示Choice類別
     GetChoiceTypeName() {
         var CardsList = [];
-        
         var ChoiceType = this.state.MenuInfo["ChoiceType"]
         var Choice = this.state.MenuInfo["Choice"]
-        // console.log("Choice:", Choice)
-        // ChoiceType.map((e,i)=>{console.log()})
-        // ChoiceTypeName_List = []
-        // ChoiceTypeID_List = []
-        
         for (var ChoiceType_key in ChoiceType) {
             var rows = []
             if (ChoiceType[ChoiceType_key]["Check"] == "0") {
@@ -273,12 +270,9 @@ class AddChoice extends Component {
                     rows.push({
                         id: parseInt(Choice_Key) + 1,
                         ChoiceName: Choice[k]["ChoiceName"],
-                        Price: Choice[k]["Price"],
-                        EditButton: <button>編輯</button>,
-                        DeleteButton: <button>刪除</button>
+                        Price: Choice[k]["Price"]
                     })
                 }
-
                 console.log("this.state.ChoiceTypeList:", this.state.ChoiceTypeList)
                 if (this.state.ChoiceTypeList.includes(ChoiceType_key)) {
                     CardsList.push(<Accordion TransitionProps={{ unmountOnExit: true }}>
@@ -331,7 +325,7 @@ class AddChoice extends Component {
                                 {/* 小寶寶 */}
                             </Typography>
                             <div style={{ height: 400, width: '100%', marginTop: '12px' }}>
-                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} checkboxSelection />
+                                <DataGrid rows={rows} columns={this.state.columns} pageSize={5} />
                             </div>
                         </AccordionDetails>
                     </Accordion>)
@@ -369,8 +363,8 @@ class AddChoice extends Component {
                                 編輯
                                 </Button>
                             </Typography>
+                            <div style={{marginLeft:'6px'}}></div>
                             <Typography color="textSecondary">
-
                             <Button
                                 id={ChoiceType[ChoiceType_key]["ChoiceTypeName"]}
                                 value={ChoiceType_key}
@@ -422,7 +416,7 @@ class AddChoice extends Component {
         </Card>)
         this.setState({ AddCard: AddCard })
     }
-    // Post新增類別的API
+    // Post新增項目的API
     AddTypeAPI() {
         let StoreID = this.state.StoreID;
         let ChoiceTypeName = this.state.ChoiceTypeName;
@@ -442,7 +436,7 @@ class AddChoice extends Component {
         };
         $.ajax(settings).done(function (response) {
             this.ShowSetMenu();
-            toast.success("成功新增類別");
+            toast.success("成功新增項目");
         }.bind(this))
     }
     render() {
@@ -455,9 +449,11 @@ class AddChoice extends Component {
                     <noscript>
                         <div className="back">『您的瀏覽器不支援JavaScript功能，若網頁功能無法正常使用時，請開啟瀏覽器JavaScript狀態』</div>
                     </noscript>
-                    <button className="menu_btn">
-                        <img style={{ height: '50%', width: '50%' }} src={menu} alt="menu" />
-                    </button>
+                    <Link to="/">
+					<button className="menu_btn">
+						<img style={{ height: '48px',width:'48px'}} src={menu} alt="menu" />
+					</button>
+					</Link>
 
                     <div style={{ backgroundColor: '#333333', height: '80%' }}>
                         <div className="headerName" id="headerName">
@@ -478,19 +474,20 @@ class AddChoice extends Component {
                         <div className="card-body ">
                             <form onSubmit={this.handleSubmit}>
                                 <div className="input-group input-group-sm">
-                                    <div className="searchbar" id="searchbar" />
+                                    {/* <div className="searchbar" id="searchbar" />
                                     <div class="d-flex justify-content-center h-100">
                                         <div class="Searchbar">
                                             <input class="search_input" type="text" name="" placeholder="Search..."></input>
                                             <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     {/* <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                         </input> */}
                                     <div className="input-group-append" >
                                         {/* <button onClick={this.handleOnClick} class="btn btn-app" style={{ position: "absolute" }}> */}
                                         <IconButton aria-label="AddCircle" size="large">
                                             <Link to="/AddChoice_Add">
+                                                編輯選項
                                                 <AddCircle fontSize="large" />
                                             </Link>
                                         </IconButton>
@@ -505,7 +502,7 @@ class AddChoice extends Component {
                                         <Card>
                                             <ListItem>
                                                 <IconButton color="primary" aria-label="add to shopping cart" onClick={this.AddTypeBTN}>
-                                                    <LibraryAddIcon />新增類別
+                                                    <LibraryAddIcon />新增項目
                                         </IconButton>
                                             </ListItem>
                                         </Card>
@@ -545,7 +542,7 @@ class AddChoice extends Component {
                         <REButton variant="secondary" onClick={this.handleClose_Edit}>
                             關閉
                         </REButton>
-                        <REButton variant="success" onClick={this.EditType} id={this.state.ChoiceTypeID}>
+                        <REButton variant="success" onClick={this.EditRadio} id={this.state.ChoiceTypeID}>
                             編輯
                         </REButton>
                     </Modal.Footer>
@@ -560,7 +557,7 @@ class AddChoice extends Component {
                         <REButton variant="secondary" onClick={this.handleClose}>
                             關閉
                         </REButton>
-                        <REButton variant="danger" onClick={this.DeleteType} id={this.state.ChoiceTypeID}>
+                        <REButton variant="danger" onClick={this.DeleteRadio} id={this.state.ChoiceTypeID}>
                             刪除
                         </REButton>
                     </Modal.Footer>
