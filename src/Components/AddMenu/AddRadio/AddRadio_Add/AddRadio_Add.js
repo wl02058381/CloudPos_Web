@@ -86,6 +86,7 @@ class AddRadio_Add extends Component {
         this.ShowSetMenu = this.ShowSetMenu.bind(this)
         this.EditChoice = this.EditChoice.bind(this)
         this.DeleteChoice = this.DeleteChoice.bind(this)
+        this.ChoiceItemMaker = this.ChoiceItemMaker.bind(this)
     }
     backgo() {
         // <Link to="/" />
@@ -236,7 +237,7 @@ class AddRadio_Add extends Component {
                         label="項目名稱"
                         type="ChoiceName"
                         // autoComplete="current-password"
-                        value={this.state.ChoiceName}
+                        defaultValue={this.state.ChoiceName}
                         variant="outlined"
                         disabled
                         onChange={this.handleChoiceNameChange}
@@ -246,7 +247,7 @@ class AddRadio_Add extends Component {
                         label="＄項目價錢"
                         type="ChoicePrice"
                         // autoComplete="current-password"
-                        value={
+                        defaultValue={
                             this.state.ChoicePrice
                         }
                         variant="outlined"
@@ -306,6 +307,27 @@ class AddRadio_Add extends Component {
         }
         OriginalChoice_List = eval(OriginalChoice_List)
         console.log(OriginalChoice_List)
+        
+        this.ChoiceItemMaker(OriginalChoice_List)//建立Choice View的元件
+        var ifdisabled;
+        if (event.target.value == "無分類") {
+            ifdisabled = true
+        } else {
+            ifdisabled = false
+        }
+        console.log(OriginalChoice_List)
+        this.setState({
+            ifdisabled: ifdisabled,   
+            selectValue: event.target.value,
+            selectChoiceTypeID: selectChoiceTypeID,
+            // OriginalCard: OriginalCard,
+            AddChoiceCard: AddChoiceCard, 
+            AddChoiceCard_Success: AddChoiceCard_Success //把其他選項的新增項目隱藏掉
+        })
+    }
+    ChoiceItemMaker(OriginalChoice_List) {
+        var OriginalCard = []
+        var Choice = this.state.MenuInfo["Choice"]
         for (var i in OriginalChoice_List) {
             var ChoiceID = OriginalChoice_List[i]
             console.log(OriginalChoice_List[i])
@@ -325,13 +347,13 @@ class AddRadio_Add extends Component {
                 </Row>
                 <Row>
                     <Col >
-                        
+
                     </Col>
                     {/* <Col style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}> */}
-                        <TextField label="原項目名稱" value={Choice[ChoiceID]["ChoiceName"]} disabled></TextField>
+                    <TextField label="原項目名稱" value={Choice[ChoiceID]["ChoiceName"]} disabled></TextField>
                     {/* </Col> */}
                     {/* <Col sm={2} xs={2} style={{ marginTop: '18px', borderTopStyle: 'solid', borderWidth: '2px', paddingBottom: '12px' }}> */}
-                        <TextField label="＄原項目價錢"value={Choice[ChoiceID]["Price"]} disabled></TextField>
+                    <TextField label="＄原項目價錢" value={Choice[ChoiceID]["Price"]} disabled></TextField>
                     {/* </Col> */}
                     <Col sm={1} xs={1}>
                     </Col>
@@ -345,7 +367,7 @@ class AddRadio_Add extends Component {
                         // class="input-group"
                         type="ChoiceName"
                         // autoComplete="current-password"
-                        defaultValue={Choice[ChoiceID]["ChoiceName"]}
+                        // defaultValue={Choice[ChoiceID]["ChoiceName"]}
                         variant="outlined"
                     // disabled
                     // onChange={this.handleChoiceNameChange}
@@ -356,15 +378,15 @@ class AddRadio_Add extends Component {
                         // class="input-group"
                         type="ChoicePrice"
                         // autoComplete="current-password"
-                        defaultValue={Choice[ChoiceID]["Price"]}
+                        // defaultValue={Choice[ChoiceID]["Price"]}
                         variant="outlined"
                         // value = {
                         //     this.state.pricevalue
                         // }
-                    // disabled
-                    onChange={
-                        this.handleChoicePriceChange
-                    }
+                        // disabled
+                        onChange={
+                            this.handleChoicePriceChange
+                        }
                     />
                     <Col sm={1} xs={1}>
                     </Col>
@@ -397,25 +419,11 @@ class AddRadio_Add extends Component {
                     </Col>
                 </Row></div>)
         }
-        var ifdisabled;
-        if (event.target.value == "無分類") {
-            ifdisabled = true
-        } else {
-            ifdisabled = false
-        }
-        console.log(OriginalChoice_List)
-        this.setState({
-            ifdisabled: ifdisabled,   
-            selectValue: event.target.value,
-            selectChoiceTypeID: selectChoiceTypeID,
-            OriginalCard: OriginalCard,
-            AddChoiceCard: AddChoiceCard, 
-            AddChoiceCard_Success: AddChoiceCard_Success //把其他選項的新增項目隱藏掉
-        })
+        this.setState({ OriginalCard: OriginalCard })
     }
     // 新增複選API
     AddChoiceAPI(ChoiceName, ChoicePrice) {
-        let StoreID = this.state.StoreID;
+        var StoreID = getParameterByName("s");
         let ChoiceTypeID = this.state.selectChoiceTypeID
         // let ChoiceName = this.state.ChoiceName;
         // let Price = this.state.ChoicePrice
@@ -466,7 +474,7 @@ class AddRadio_Add extends Component {
         var Priceid = ChoiceID + '_Price'
         console.log(Priceid)
         var Price = $('#' + Priceid).val()
-        let StoreID = this.state.StoreID;
+        var StoreID = getParameterByName("s");
         let ChoiceTypeID = this.state.selectChoiceTypeID
         let Offshelf = '0'
         var settings = {
@@ -503,7 +511,10 @@ class AddRadio_Add extends Component {
     DeleteChoice(event) {
         console.log(event.currentTarget.id) //ChoiceID
         var ChoiceID = event.currentTarget.id
-        let StoreID = this.state.StoreID;
+        var StoreID = getParameterByName("s");
+        var ChoiceType = this.state.MenuInfo["ChoiceType"]
+        var OriginalChoice_List = ChoiceType[this.state.selectChoiceTypeID]["ChoiceList"]
+        var OriginalChoice_List_new = [];
         var settings = {
             "url": API_Url + ':' + API_Port + "/DelChoice",
             "method": "POST",
@@ -527,6 +538,18 @@ class AddRadio_Add extends Component {
                 draggable: true
             });
             // window.location.reload(false);
+            OriginalChoice_List = eval(OriginalChoice_List);
+            console.log(OriginalChoice_List)
+            for (var i in OriginalChoice_List) {
+                var ChoiceID_val = OriginalChoice_List[i]
+                console.log("ChoiceID_val", ChoiceID_val)
+                if (ChoiceID_val != ChoiceID) {
+                    OriginalChoice_List_new.push(ChoiceID_val)
+                }
+            }
+            console.log("OriginalChoice_List_new", OriginalChoice_List_new)
+            // ChoiceType[this.state.selectChoiceTypeID]["ChoiceList"] = OriginalChoice_List_new;
+            this.ChoiceItemMaker(OriginalChoice_List_new)
         }.bind(this))
         
 

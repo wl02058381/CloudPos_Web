@@ -236,35 +236,7 @@ class StoreSet_QR extends Component {
                 var url = `${Customer_URL}/#/${StoreID}/Intermal_${TableTxt}`
                 var DinigStyle = `Intermal_${TableTxt}`
                 this.GetShortUrlGetData(url, StoreID, DinigStyle).then((val) => {
-                    // var Intermal_QR =
-                    // < div >
-                    //     < Row>
-                    //         <Col className="text-center">
-                    //             <QRCode value={val.short_url}
-                    //                 id="Intermal-QRcode"
-                    //                 size="100"
-                    //                 includeMargin={false}
-                    //                 imageSettings={{
-                    //                     src: `${file_Img_Url}`,
-                    //                     x: null,
-                    //                     y: null,
-                    //                     height: 20,
-                    //                     width: 20,
-                    //                     excavate: true,
-                    //                 }}
-                    //             >
-                    //             </QRCode>
-                    //         </Col>
-                    //     </Row>
-                    // <Row >
-                    //     <Col className="text-center">
-                    //         <Button variant="success" onClick={this.download} id="Intermal-QRcode_btn" className="width_60"><GetAppIcon />  下載</Button>
-                    //         <Button variant="success" onClick={this.CopyURL} id="Intermal-QRcode_btn" className="width_60"><AssignmentIcon />  複製</Button>
-                    //     </Col>
-                    // </Row >
-                    //     </div>
-                    // this.setState({ "Intermal_QR": Intermal_QR })
-                    $("#Intermal_QR").children().remove()
+                    $("#Intermal-QRcode").children().remove()
                     console.log("Intermal_QR", this.Intermal_QR)
                     console.log("file_Img_Url", file_Img_Url)
 

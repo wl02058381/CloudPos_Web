@@ -416,7 +416,7 @@ class UpdateMenu extends Component {
             }
             if (FoodItem.SoldOut == "0" & FoodItem.OffShelf == "0") {
                 var BTN = <Col><div class="btn-group" Style="margin-top:12px">
-                    <button id={FoodID} onClick={this.UpdateFood_SoldOut} type="button" class="btn btn-success">販售中</button>
+                    <button id={FoodID} onClick={this.UpdateFood_SoldOut} type="button" class="btn btn-warning">販售中</button>
                     <button id={FoodID} onClick={this.UpdateFood_Offshelf} type="button" class="btn btn-success">上架</button>
                     <Button id={FoodID} type="button" class="btn btn-info"><Link to={path} Style="color: #FFF;">設定</Link></Button>
                 </div></Col>;

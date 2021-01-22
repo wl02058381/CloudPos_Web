@@ -88,6 +88,7 @@ class StorePage extends Component {
     Upload(event) {
         event.preventDefault();
         var image_id = $("#image_id").children(":selected").attr("id");
+        image_id = this.state.StoreID + image_id
         console.log("image_id:", image_id)
         var myHeaders = new Headers();
         myHeaders.append("image_id", image_id);
