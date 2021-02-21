@@ -123,7 +123,7 @@ class StorePage extends Component {
 
         // console.log(path)
         return (
-            < div className = "contact-section" >
+            < div className="contact-section" >
                 <header className="header" style={{ height: '100%' }}>
                     <div className="TopBar">
                         <button className="back_btn" onClick={this.backgo}>
@@ -133,10 +133,10 @@ class StorePage extends Component {
                             <div className="back">『您的瀏覽器不支援JavaScript功能，若網頁功能無法正常使用時，請開啟瀏覽器JavaScript狀態』</div>
                         </noscript>
                         <Link to="/">
-					<button className="menu_btn">
-						<img style={{ height: '48px',width:'48px'}} src={menu} alt="menu" />
-					</button>
-					</Link>
+                            <button className="menu_btn">
+                                <img style={{ height: '48px', width: '48px' }} src={menu} alt="menu" />
+                            </button>
+                        </Link>
                     </div>
                     <div style={{ backgroundColor: '#333333', height: '80%' }}>
                         <div className="headerName" id="headerName">
@@ -157,15 +157,15 @@ class StorePage extends Component {
                         src="./123.jpg"//"holder.js/800x400?text=First slide&bg=373940"
                         alt="First slide"
                     /> */}
-                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/Store_1`} /></div>
+                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/${this.state.StoreID}Store_1`} /></div>
 
                             </Carousel.Item>
                             <Carousel.Item interval={500}>
-                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/Store_2`} /></div>
+                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/${this.state.StoreID}Store_2`} /></div>
 
                             </Carousel.Item>
                             <Carousel.Item>
-                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/Store_3`} /></div>
+                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/${this.state.StoreID}Store_3`} /></div>
 
                             </Carousel.Item>
                         </Carousel>

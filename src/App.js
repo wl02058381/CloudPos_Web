@@ -10,6 +10,7 @@ import AddRadio from './Components/AddMenu/AddRadio/AddRadio';
 import AddType from './Components/AddMenu/AddType/AddType';
 import StoreSet from './Components/StoreInfo/StoreSet';
 import StoreSet_img from './Components/StoreInfo/StoreSet_img';
+import StoreSet_img_2 from './Components/StoreInfo/StoreSet_img_2';
 import StoreSet_QR from './Components/StoreInfo/StoreSet_QR';
 import UpdateMenu from './Components/UpdateMenu/index';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -43,6 +44,7 @@ class App extends React.Component {
 						<Route exact path="/AddRadio_Add" component={AddRadio_Add} />
 						<Route exact path="/StoreSet"  component={StoreSet} />
 						<Route exact path="/StoreSet_img"  component={StoreSet_img} />
+						<Route exact path="/StoreSet_img_2" component={StoreSet_img_2} />
 						<Route exact path="/StoreSet_QR"  component={StoreSet_QR} />
 						< Route exact path = "/StoreData" component = {StoreData}/>
 						< Route exact path = "/HistoryCancelOrder" component = {HistoryCancelOrder}/>

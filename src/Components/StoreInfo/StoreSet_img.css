@@ -15,7 +15,12 @@
 #Hr_style {
     margin-top: 2vh;
     margin-bottom: 2vh;
-    
+}
+
+#bkcolor {
+    background-color: black;
+    width: 100vw;
+    height: 20vh;
 }
 
 .Row_Title {
@@ -32,4 +37,9 @@
 
 #img_display {
     display: flex;
+}
+
+.Header_Img_style {
+    height: 100%;
+    width: auto !important;
 }
