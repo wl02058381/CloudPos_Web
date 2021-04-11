@@ -107,7 +107,7 @@ class operate extends Component {
             redirect: 'follow'
         };
         
-            fetch("https://CloudPos.54ucl.com:8011/OperateData", requestOptions)
+            fetch(API_Url + ':' + API_Port + "/OperateData", requestOptions)
             .then(response => response.text())
             .then(function (result) {
                

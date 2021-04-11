@@ -204,7 +204,7 @@ class AddMenu extends Component {
             body: formdata,
             redirect: 'follow'
         };
-        fetch("https://cloudpos.54ucl.com:8011/ImageUpload", requestOptions)
+        fetch(API_Url + ':' + API_Port + "/ImageUpload", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));

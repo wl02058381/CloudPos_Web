@@ -3,7 +3,9 @@ import './MarketingContent.css';
 import $ from 'jquery';
 import { Button, Container, Row, Col,  Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+const Config = require("../../config")
+const API_Url = Config.Post_IP.API_IP;
+const API_Port = Config.Post_IP.API_Port;
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
@@ -71,7 +73,7 @@ class Commodity extends Component {
             redirect: 'follow'
         };
 
-        fetch("https://CloudPos.54ucl.com:8011/FoodStatistics", requestOptions)
+        fetch(API_Url + ':' + API_Port +"/FoodStatistics ", requestOptions)
             .then(response => response.text())
             .then(function (result) {
                 var APIData = JSON.parse(result)

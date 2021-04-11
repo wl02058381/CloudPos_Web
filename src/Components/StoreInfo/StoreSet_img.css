@@ -9,7 +9,7 @@
 
 #image_id {
     margin-right: 1px;
-    width: 70%;
+    width: 95%;
 }
 
 #Hr_style {
@@ -43,3 +43,11 @@
     height: 100%;
     width: auto !important;
 }
+
+#image_btn_SetImg {
+    width: 100%;
+}
+
+/* #StoreImgStyle {
+    height: 100px;
+} */

@@ -39,7 +39,7 @@ class HistoryOrder extends Component {
             "OrderData": null,
             "OrderTable": null,
             "StoreID": "",
-            "API_UrL": "https://CloudPos.54ucl.com:8011",
+            "API_UrL": API_Url + ':' + API_Port ,
             "MenuInfo": null,
             "selectedDate": moment(),
             "PeriodType": "day",
