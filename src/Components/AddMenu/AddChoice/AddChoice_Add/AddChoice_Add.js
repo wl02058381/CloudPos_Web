@@ -442,7 +442,7 @@ class AddChoice_Add extends Component {
         // let Price = this.state.ChoicePrice
         let Offshelf = '0'
         var settings = {
-            "url": API_Url + ':' + API_Port + "/AddChoice",
+            "url": API_Url+ "/AddChoice",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -491,7 +491,7 @@ class AddChoice_Add extends Component {
         let ChoiceTypeID = this.state.selectChoiceTypeID
         let Offshelf = '0'
         var settings = {
-            "url": API_Url + ':' + API_Port + "/UpdateChocie",
+            "url": API_Url+ "/UpdateChocie",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -526,7 +526,7 @@ class AddChoice_Add extends Component {
         var OriginalChoice_List = ChoiceType[this.state.selectChoiceTypeID]["ChoiceList"]
         var OriginalChoice_List_new = [] ;
         var settings = {
-            "url": API_Url + ':' + API_Port + "/DelChoice",
+            "url": API_Url+ "/DelChoice",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -563,7 +563,7 @@ class AddChoice_Add extends Component {
     }
     ShowSetMenu() {
         var StoreID = getParameterByName("s");
-        console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
+        console.log("Post", API_Url+ "/ShowSetMenu")
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({ "StoreID": StoreID });
@@ -573,7 +573,7 @@ class AddChoice_Add extends Component {
             body: raw,
             redirect: 'follow'
         };
-        fetch(API_Url + ':' + API_Port + "/ShowSetMenu", requestOptions)
+        fetch(API_Url+ "/ShowSetMenu", requestOptions)
             .then(response => response.text())
             .then(function (result) {
                 var MenuInfo = JSON.parse(result)

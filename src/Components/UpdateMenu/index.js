@@ -92,7 +92,7 @@ class UpdateMenu extends Component {
     //顯示菜單
     ShowSetMenu() {
         var StoreID = getParameterByName("s");
-        console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
+        console.log("Post", API_Url+ "/ShowSetMenu")
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({ "StoreID": StoreID });
@@ -102,7 +102,7 @@ class UpdateMenu extends Component {
             body: raw,
             redirect: 'follow'
         };
-        fetch(API_Url + ':' + API_Port + "/ShowSetMenu", requestOptions)
+        fetch(API_Url+ "/ShowSetMenu", requestOptions)
             .then(response => response.text())
             .then(function (result) {
                 var MenuInfo = JSON.parse(result)
@@ -128,7 +128,7 @@ class UpdateMenu extends Component {
         let SoldOut = "1"
         let OffShelf = "0"
         var settings = {
-            "url": API_Url + ':' + API_Port + "/UpdateFoodStatus",
+            "url": API_Url+ "/UpdateFoodStatus",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -157,7 +157,7 @@ class UpdateMenu extends Component {
         let SoldOut = "0"
         let OffShelf = "0"
         var settings = {
-            "url": API_Url + ':' + API_Port + "/UpdateFoodStatus",
+            "url": API_Url+ "/UpdateFoodStatus",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -186,7 +186,7 @@ class UpdateMenu extends Component {
         let SoldOut = "0"
         let OffShelf = "1"
         var settings = {
-            "url": API_Url + ':' + API_Port + "/UpdateFoodStatus",
+            "url": API_Url+ "/UpdateFoodStatus",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -215,7 +215,7 @@ class UpdateMenu extends Component {
         let SoldOut = "0"
         let OffShelf = "0"
         var settings = {
-            "url": API_Url + ':' + API_Port + "/UpdateFoodStatus",
+            "url": API_Url+ "/UpdateFoodStatus",
             "method": "POST",
             "timeout": 0,
             "headers": {

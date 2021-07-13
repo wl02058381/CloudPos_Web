@@ -149,7 +149,7 @@ class AddMenu extends Component {
         let OffShelf = "0"
         
         var settings = {
-            "url": API_Url + ':' + API_Port + "/AddFood",
+            "url": API_Url+ "/AddFood",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -204,7 +204,7 @@ class AddMenu extends Component {
             body: formdata,
             redirect: 'follow'
         };
-        fetch(API_Url + ':' + API_Port + "/ImageUpload", requestOptions)
+        fetch(API_Url+ "/ImageUpload", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));

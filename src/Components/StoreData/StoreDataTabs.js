@@ -12,7 +12,8 @@ import creatHistory from 'history/createHashHistory';
 import {Link,withRouter} from 'react-router-dom';
 import HistoryCancelOrder from './HistoryCancelOrder';
 const moment = require("moment")
-
+const Config = require("../../config")
+const API_Url = Config.Post_IP.API_IP;
 class StoreDataTabs extends Component {
     constructor(props) {
         super(props);

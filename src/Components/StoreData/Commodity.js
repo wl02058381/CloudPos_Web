@@ -5,7 +5,7 @@ import { Button, Container, Row, Col,  Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 const Config = require("../../config")
 const API_Url = Config.Post_IP.API_IP;
-const API_Port = Config.Post_IP.API_Port;
+// const API_Port = Config.Post_IP.API_Port;
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
@@ -73,12 +73,15 @@ class Commodity extends Component {
             redirect: 'follow'
         };
 
-        fetch(API_Url + ':' + API_Port +"/FoodStatistics ", requestOptions)
+        fetch(API_Url+"/FoodStatistics ", requestOptions)
             .then(response => response.text())
             .then(function (result) {
                 var APIData = JSON.parse(result)
                 console.log(APIData)
-                this.setState({ "APIData": APIData })
+                // this.setState({ "APIData": APIData },()=>{
+                //     this.CommodityData()
+                // })
+                this.setState({ "APIData": APIData });
                 this.CommodityData()
             }.bind(this))
             .catch(error => console.log('error', error));
@@ -87,9 +90,8 @@ class Commodity extends Component {
 
 
     CommodityData() {
-        var APIData = this.state.APIData
-
-        
+        var APIData = this.state.APIData;
+        console.log(APIData);
         var Data = [];
         var TableOpthion = [];
         var Food = APIData.Food

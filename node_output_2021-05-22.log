@@ -1,0 +1,34 @@
+檔案:node_output_2021-05-22.log刪除成功！
+OperateData
+statusCode: 200
+body有值: true
+OperateData
+FoodStatistics
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+OperateData
+FoodStatistics
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true

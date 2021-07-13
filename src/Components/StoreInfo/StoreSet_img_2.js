@@ -21,9 +21,9 @@ import MomentUtils from '@date-io/moment';
 import DateFnsUtils from '@date-io/date-fns';
 import LuxonUtils from '@date-io/luxon';;
 import creatHistory from 'history/createHashHistory';
-const Config = require("./config")
+const Config = require('../../config');
 const moment = require("moment")
-const API_Url = Config.API_URL;
+const API_Url = Config.Post_IP.API_IP;
 
 
 function getParameterByName(name, url) {

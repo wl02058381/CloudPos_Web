@@ -4,7 +4,8 @@ import $ from 'jquery';
 import { Button, Container, Row, Col} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CanvasJSReact from './assets/canvasjs.react';
-
+const Config = require("../../config")
+const API_Url = Config.Post_IP.API_IP;
 const moment = require("moment")
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 class OrderRecord extends Component {

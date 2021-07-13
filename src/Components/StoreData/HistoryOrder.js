@@ -12,7 +12,8 @@ import BootstrapTable1 from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-
+const Config = require("../../config")
+const API_Url = Config.Post_IP.API_IP;
 
 const moment = require("moment")
 function getParameterByName(name, url) {
@@ -39,7 +40,7 @@ class HistoryOrder extends Component {
             "OrderData": null,
             "OrderTable": null,
             "StoreID": "",
-            "API_UrL": API_Url + ':' + API_Port ,
+            "API_UrL": API_Url ,
             "MenuInfo": null,
             "selectedDate": moment(),
             "PeriodType": "day",

@@ -18,7 +18,7 @@ import { withRouter } from "react-router";
 
 const Config = require("../../config")
 const API_Url = Config.Post_IP.API_IP;
-const API_Port = Config.Post_IP.API_Port;
+// const API_Port = Config.Post_IP.API_Port;
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -171,7 +171,7 @@ class EditMenu extends Component {
         var StoreID = getParameterByName("s");
         let FoodID = sessionStorage.getItem("FoodID")
         var settings = {
-            "url": API_Url + ':' + API_Port + "/DelFood",
+            "url": API_Url+ "/DelFood",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -282,7 +282,7 @@ class EditMenu extends Component {
         let SoldOut = "0"
         let OffShelf = "0"
         var settings = {
-            "url": API_Url + ':' + API_Port + "/UpdateFood",
+            "url": API_Url+ "/UpdateFood",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -345,7 +345,7 @@ class EditMenu extends Component {
             body: formdata,
             redirect: 'follow'
         };
-        fetch(Config.Post_IP.API_IP + ':' + Config.Post_IP.API_Port + "/ImageUpload", requestOptions)
+        fetch( API_Url+"/ImageUpload", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));

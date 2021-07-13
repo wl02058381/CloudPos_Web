@@ -24,10 +24,10 @@ import creatHistory from 'history/createHashHistory';
 
 
 
-const Config = require("./config")
+const Config = require('../../config');
 const moment = require("moment")
-const API_Url = Config.API_URL;
-
+const API_Url = Config.Post_IP.API_IP;
+const Image_Url = Config.Post_IP.ImgURL;
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -183,7 +183,7 @@ class StorePage extends Component {
                         <Carousel.Item interval={1000} >
                             <div
                                 div id="bkcolor" > < img className="Header_Img_style"
-                                    src={`${Config.ImgURL}${this.state.StoreID}/${ImageID}`} />
+                                    src={`${Image_Url}${this.state.StoreID}/${ImageID}`} />
                             </div >
                         </Carousel.Item>
                     )
@@ -248,7 +248,7 @@ class StorePage extends Component {
 
                                 </Col>
                                 <Col className={"text-center col-6"}>
-                                    < img id="StoreImgStyle" src={`${Config.ImgURL}${this.state.StoreID}/${ImageID}`} />
+                                    < img id="StoreImgStyle" src={`${Image_Url}${this.state.StoreID}/${ImageID}`} />
                                 </Col>
 
                             </Row>
@@ -269,7 +269,7 @@ class StorePage extends Component {
 
                                 </Col>
                                 <Col className={"text-center col-6"}>
-                                    < img id="StoreImgStyle" src={`${Config.ImgURL}${this.state.StoreID}/${ImageID}`} />
+                                    < img id="StoreImgStyle" src={`${Image_Url}${this.state.StoreID}/${ImageID}`} />
                                 </Col>
                             </Row>
                         )

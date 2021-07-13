@@ -34,10 +34,10 @@ import * as QRCode from 'easyqrcodejs';
 
 var fileDownload = require('js-file-download');
 // var QRCode = require('qrcode.react');
-const Config = require("./config")
+const Config = require('../../config');
 const moment = require("moment")
-const Customer_URL = Config.CustomerUrl
-const API_Url = Config.API_URL;
+const Customer_URL = Config.Post_IP.CustomerUrl;
+const API_URL = Config.Post_IP.API_IP;
 
 
 

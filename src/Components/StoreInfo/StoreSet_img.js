@@ -21,10 +21,10 @@ import MomentUtils from '@date-io/moment';
 import DateFnsUtils from '@date-io/date-fns';
 import LuxonUtils from '@date-io/luxon';;
 import creatHistory from 'history/createHashHistory';
-const Config = require("./config")
+const Config = require('../../config');
 const moment = require("moment")
-const API_Url = Config.API_URL;
-
+const API_Url = Config.Post_IP.API_IP;
+const Image_Url = Config.Post_IP.ImgURL;
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -157,15 +157,15 @@ class StorePage extends Component {
                         src="./123.jpg"//"holder.js/800x400?text=First slide&bg=373940"
                         alt="First slide"
                     /> */}
-                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/${this.state.StoreID}Store_1`} /></div>
+                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Image_Url}${this.state.StoreID}/${this.state.StoreID}Store_1`} /></div>
 
                             </Carousel.Item>
                             <Carousel.Item interval={500}>
-                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/${this.state.StoreID}Store_2`} /></div>
+                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Image_Url}${this.state.StoreID}/${this.state.StoreID}Store_2`} /></div>
 
                             </Carousel.Item>
                             <Carousel.Item>
-                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Config.ImgURL}${this.state.StoreID}/${this.state.StoreID}Store_3`} /></div>
+                                <div id="bkcolor" ><img className="Header_Img_style" src={`${Image_Url}${this.state.StoreID}/${this.state.StoreID}Store_3`} /></div>
 
                             </Carousel.Item>
                         </Carousel>

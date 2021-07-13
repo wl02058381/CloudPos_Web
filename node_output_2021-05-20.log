@@ -1,0 +1,52 @@
+檔案:node_output_2021-05-20.log刪除成功！
+OperateData
+FoodStatistics
+Post | /ShowSetMenu
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+Post | /ShowSetMenu
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+Post | /OrderHistory
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+OperateData
+FoodStatistics
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+Post | /ShowSetMenu
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+Post | /ShowSetMenu
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+Post | /OrderHistory
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+Post | /OrderCancelHistory
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+OperateData
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+OperateData
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+FoodStatistics
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+FoodStatistics
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+Post | /OrderHistory
+statusCode: [33m200[39m
+body有值: [33mtrue[39m
+Post | /OrderHistory
+statusCode: [33m200[39m
+body有值: [33mtrue[39m

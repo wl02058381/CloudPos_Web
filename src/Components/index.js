@@ -11,8 +11,8 @@ import '../plugins/fontawesome-free/css/all.min.css';
 import '../dist/css/alt/adminlte.css';
 import $ from 'jquery';
 const Config = require("../config")
-const API_Url = Config.Post_IP.API_IP;
-const API_Port = Config.Post_IP.API_Port;
+// const API_Url = Config.Post_IP.API_IP;
+// const API_Port = Config.Post_IP.API_Port;
 export default class extends Component {
 	backgo() {
 		// <Link to="/" />

@@ -139,7 +139,7 @@ class EditRadio extends Component {
         var NewChoiceTypeName = this.state.NewChoiceTypeName;
         var Check = '1'
         var settings = {
-            "url": API_Url + ':' + API_Port + "/UpdateChocieType",
+            "url": API_Url+ "/UpdateChocieType",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -162,7 +162,7 @@ class EditRadio extends Component {
         var ChoiceTypeID = this.state.ChoiceTypeID;
         var ChoiceTypeList = this.state.ChoiceTypeList
         var settings = {
-            "url": API_Url + ':' + API_Port + "/DelChoiceType",
+            "url": API_Url+ "/DelChoiceType",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -205,7 +205,7 @@ class EditRadio extends Component {
     ShowSetMenu() {
         
         var StoreID = getParameterByName("s");
-        console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
+        console.log("Post", API_Url+ "/ShowSetMenu")
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({ "StoreID": StoreID });
@@ -215,7 +215,7 @@ class EditRadio extends Component {
             body: raw,
             redirect: 'follow'
         };
-        fetch(API_Url + ':' + API_Port + "/ShowSetMenu", requestOptions)
+        fetch(API_Url+ "/ShowSetMenu", requestOptions)
             .then(response => response.text())
             .then(function (result) {
                 var MenuInfo = JSON.parse(result)
@@ -256,7 +256,7 @@ class EditRadio extends Component {
         let ChoiceTypeName = this.state.ChoiceTypeName;
         var Check = '1'
         var settings = {
-            "url": API_Url + ':' + API_Port + "/AddChoiceType",
+            "url": API_Url+ "/AddChoiceType",
             "method": "POST",
             "timeout": 0,
             "headers": {

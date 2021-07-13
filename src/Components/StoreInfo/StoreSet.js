@@ -22,9 +22,9 @@ import LuxonUtils from '@date-io/luxon';import { id } from 'date-fns/esm/locale'
 ;
 
 
-const Config = require("./config")
+const Config = require('../../config');
 const moment = require("moment")
-const API_URL = Config.API_URL;
+const API_URL = Config.Post_IP.API_IP;
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -113,7 +113,6 @@ class StorePage extends Component {
             body: raw,
             redirect: 'follow'
         };
-
         fetch(`${API_URL}/ManagerFirstPage`, requestOptions)
             .then(response => response.text())
             .then(function (result) {

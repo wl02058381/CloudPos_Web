@@ -1,0 +1,609 @@
+檔案:node_output_2021-05-23.log刪除成功！
+FoodStatistics
+OperateData
+FoodStatistics
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+FoodStatistics
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+FoodStatistics
+OperateData
+FoodStatistics
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+OperateData
+statusCode: 200
+body有值: true
+FoodStatistics
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+FoodStatistics
+OperateData
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+OperateData
+FoodStatistics
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+OperateData
+FoodStatistics
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /UpdateFood
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+OperateData
+FoodStatistics
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /AddStoreData
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /AddChoiceType
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /AddChoice
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /AddChoice
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /AddFoodType
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /AddFood
+statusCode: 200
+body有值: true
+file =>  undefined
+F_TE0kt630W29 S_d27d44f1-5fdf-4f3f-8fa7-397c483d12c2
+test
+TypeError: Cannot read property 'buffer' of undefined
+    at /home/user/CloudPos_Web/server.js:880:39
+    at Layer.handle [as handle_request] (/home/user/CloudPos_Web/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/user/CloudPos_Web/node_modules/express/lib/router/route.js:137:13)
+    at Array.<anonymous> (/home/user/CloudPos_Web/node_modules/multer/lib/make-middleware.js:53:37)
+    at listener (/home/user/CloudPos_Web/node_modules/on-finished/index.js:169:15)
+    at onFinish (/home/user/CloudPos_Web/node_modules/on-finished/index.js:100:5)
+    at callback (/home/user/CloudPos_Web/node_modules/ee-first/index.js:55:10)
+    at IncomingMessage.onevent (/home/user/CloudPos_Web/node_modules/ee-first/index.js:93:5)
+    at IncomingMessage.emit (events.js:327:22)
+    at endReadableNT (internal/streams/readable.js:1327:12)
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /UpdateFood
+statusCode: 200
+body有值: true
+file =>  undefined
+F_TE0kt630W29 S_d27d44f1-5fdf-4f3f-8fa7-397c483d12c2
+test
+TypeError: Cannot read property 'buffer' of undefined
+    at /home/user/CloudPos_Web/server.js:880:39
+    at Layer.handle [as handle_request] (/home/user/CloudPos_Web/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/user/CloudPos_Web/node_modules/express/lib/router/route.js:137:13)
+    at Array.<anonymous> (/home/user/CloudPos_Web/node_modules/multer/lib/make-middleware.js:53:37)
+    at listener (/home/user/CloudPos_Web/node_modules/on-finished/index.js:169:15)
+    at onFinish (/home/user/CloudPos_Web/node_modules/on-finished/index.js:100:5)
+    at callback (/home/user/CloudPos_Web/node_modules/ee-first/index.js:55:10)
+    at IncomingMessage.onevent (/home/user/CloudPos_Web/node_modules/ee-first/index.js:93:5)
+    at IncomingMessage.emit (events.js:327:22)
+    at endReadableNT (internal/streams/readable.js:1327:12)
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+OperateData
+statusCode: 200
+body有值: true
+FoodStatistics
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /AddStoreData
+statusCode: 200
+body有值: true
+OperateData
+statusCode: 200
+body有值: true
+FoodStatistics
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /AddChoiceType
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /AddFoodType
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /AddChoiceType
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /AddFood
+statusCode: 200
+body有值: true
+file =>  undefined
+F_IeYLDCI4Y34 S_50b6ca6a-1734-4b51-aaa6-2789f80cd051
+test
+TypeError: Cannot read property 'buffer' of undefined
+    at /home/user/CloudPos_Web/server.js:880:39
+    at Layer.handle [as handle_request] (/home/user/CloudPos_Web/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/user/CloudPos_Web/node_modules/express/lib/router/route.js:137:13)
+    at Array.<anonymous> (/home/user/CloudPos_Web/node_modules/multer/lib/make-middleware.js:53:37)
+    at listener (/home/user/CloudPos_Web/node_modules/on-finished/index.js:169:15)
+    at onFinish (/home/user/CloudPos_Web/node_modules/on-finished/index.js:100:5)
+    at callback (/home/user/CloudPos_Web/node_modules/ee-first/index.js:55:10)
+    at IncomingMessage.onevent (/home/user/CloudPos_Web/node_modules/ee-first/index.js:93:5)
+    at IncomingMessage.emit (events.js:327:22)
+    at endReadableNT (internal/streams/readable.js:1327:12)
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+FoodStatistics
+OperateData
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+OperateData
+statusCode: 200
+body有值: true
+FoodStatistics
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+OperateData
+Post | /ShowSetMenu
+FoodStatistics
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+FindStoreImage
+statusCode: 200
+body有值: true
+FindStoreImage_All
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+FoodStatistics
+OperateData
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+FindStoreImage
+statusCode: 200
+body有值: true
+FindStoreImage_All
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ManagerFirstPage
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+FoodStatistics
+Post | /ShowSetMenu
+OperateData
+Post | /ShowSetMenu
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderCancelHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true
+Post | /OrderHistory
+statusCode: 200
+body有值: true

@@ -13,7 +13,8 @@ import BootstrapTable from 'react-bootstrap-table-next';
 
 const moment = require("moment")
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
+const Config = require("../../config")
+const API_Url = Config.Post_IP.API_IP;
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -107,14 +108,15 @@ class operate extends Component {
             redirect: 'follow'
         };
         
-            fetch(API_Url + ':' + API_Port + "/OperateData", requestOptions)
+            fetch(API_Url+ "/OperateData", requestOptions)
             .then(response => response.text())
             .then(function (result) {
-               
                     var APIData = JSON.parse(result)
                     console.log(APIData)
-                    this.setState({"APIData":APIData})
-                    this.OperateInitialData()
+                    this.setState({"APIData":APIData},()=>{
+                        this.OperateInitialData()
+                    })
+                    
             }.bind(this))
             .catch(error => console.log('error', error));
         

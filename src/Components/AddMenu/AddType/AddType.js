@@ -294,7 +294,7 @@ class AddType extends Component {
         let StoreID = this.state.StoreID;
         let FoodTypeName = this.state.FoodTypeName;
         var settings = {
-            "url": API_Url + ':' + API_Port + "/AddFoodType",
+            "url": API_Url+ "/AddFoodType",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -316,7 +316,7 @@ class AddType extends Component {
         this.setState({
             StoreID: StoreID
         })
-        console.log("Post", API_Url + ':' + API_Port + "/ShowSetMenu")
+        console.log("Post", API_Url+ "/ShowSetMenu")
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({ "StoreID": StoreID });
@@ -326,7 +326,7 @@ class AddType extends Component {
             body: raw,
             redirect: 'follow'
         };
-        fetch(API_Url + ':' + API_Port + "/ShowSetMenu", requestOptions)
+        fetch(API_Url+ "/ShowSetMenu", requestOptions)
             .then(response => response.text())
             .then(function (result) {
                 var MenuInfo = JSON.parse(result)
@@ -342,7 +342,7 @@ class AddType extends Component {
         var StoreID = this.state.StoreID;
         var FoodTypeID = this.state.FoodTypeID;
         var settings = {
-            "url": API_Url + ':' + API_Port + "/DelFoodType",
+            "url": API_Url+ "/DelFoodType",
             "method": "POST",
             "timeout": 0,
             "headers": {
@@ -363,7 +363,7 @@ class AddType extends Component {
         var FoodTypeID = this.state.FoodTypeID;
         var EditFoodTypeName = this.state.NewFoodTypeName;
         var settings = {
-            "url": API_Url + ':' + API_Port + "/UpdateFoodType",
+            "url": API_Url+ "/UpdateFoodType",
             "method": "POST",
             "timeout": 0,
             "headers": {
